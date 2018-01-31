@@ -1,0 +1,58 @@
+body {
+  background: rgba(0, 0, 0, 0.2);
+}
+.js-forms {
+  width: 280px;
+  height: 80px;
+  font: normal 10px verdana;
+  text-align: center;
+  margin: 40px auto;
+  border: 5px rgb(171, 170, 170);
+  border-style: outset inset inset outset;
+  border-radius: 5px;
+}
+form {
+  margin: 30px 0 60px 0;
+}
+select {
+  width: 150px;
+  font: normal 11px verdana;
+  color: rgb(220, 220, 220);
+  background: rgb(0, 0, 0);
+}      
+#map {
+  height: 50%;
+  width: 50%;
+  margin: auto;
+  border: solid black 5px;
+  border-radius: 5px;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#floating-panel {
+  position: absolute;
+  top: 10px;
+  left: 25%;
+  z-index: 5;
+  background-color: rgb(173, 184, 250);
+  padding: 5px;
+  border: 1px solid #999;
+  text-align: center;
+  font-family: 'Roboto','sans-serif';
+  line-height: 30px;
+  padding-left: 10px;
+}
+#floating-panel {
+  background-color: rgb(106, 198, 235);
+  border: 5px solid rgb(6, 0, 65);
+  border-radius: 5px;
+  left: 33%;
+  padding: 5px;
+  position: absolute;
+  top: 10px;
+  z-index: 5;
+}
