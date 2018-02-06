@@ -11,6 +11,9 @@ body {
   border-style: outset inset inset outset;
   border-radius: 5px;
 }
+.js-searchbox {
+  padding-left: 33%;
+}
 form {
   margin: 30px 0 60px 0;
 }
