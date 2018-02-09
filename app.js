@@ -47,11 +47,11 @@ function genCoordinates() {
 
 ////Get Request URL Generators////
 function getRequestGenerator() {
-  function generateNormalGeoCoding() {
-    let getNormalGeoCoding = `${geoCodingEndpoint}address=${STATE.address}&key=${geoCodingApiKey}`;
-    console.log(getNormalGeoCoding);
-    return getNormalGeoCoding;
-  }
+  // function generateNormalGeoCoding() {
+  //   let getNormalGeoCoding = `${geoCodingEndpoint}address=${STATE.address}&key=${geoCodingApiKey}`;
+  //   console.log(getNormalGeoCoding);
+  //   return getNormalGeoCoding;
+  // }
   function generateReverseGeoCoding() {
     let getReverseGeocoding = `${geoCodingEndpoint}latlng=${STATE.userLatLng}&key=${geoCodingApiKey}`;
     console.log(getReverseGeocoding);
@@ -74,7 +74,7 @@ function getRequestGenerator() {
     console.log(getGoogleMaps);
     return getGoogleMaps;
   }
-  generateNormalGeoCoding();
+  // generateNormalGeoCoding();
   generateReverseGeoCoding();
   generateMtbProject();
   generateWUnderground();
@@ -1044,20 +1044,27 @@ function getPoints() {
 //////////////////////////////////
 ///////Geocoding AJAX Call////////  ** Not yet working
 //////////////////////////////////
-// function getNormalGeoCoding(searchTerm, callback) {
-//   const settings = {
-//     url: mtbProjectEndpoint,
-//     data: {
-//       key: mtbProjectApiKey,
-//       per_page: 5
-//     },
-//     dataType: 'json',
-//     type: 'GET',
-//     success: callback
-//   };
-//   console.log($.ajax(settings));
-//   $.ajax(settings);
-// }
+let geoResults;
+function getNormalGeoCoding(searchTerm, callback) {
+  
+  const settings = {
+    url: geoCodingEndpoint,
+    data: {
+      address: 80526,
+      key: geoCodingApiKey
+    },
+    dataType: 'json',
+    type: 'GET',
+    success: callback
+  };
+  // console.log($.ajax(settings));
+  $.ajax(settings);
+  geoResults = $.ajax(settings);
+  console.log(geoResults);
+  console.log(geoResults.abort);
+  console.log(geoResults.pipe);
+  console.log(geoResults.responseJSON);
+}
 //==================================================================================================================
 //////////////////////////////////
 ////Function to call Renderers////
@@ -1068,6 +1075,7 @@ function execute() {
   // getDataFromApi();
   genCoordinates();
   getRequestGenerator();
+  getNormalGeoCoding();
 }
 //==================================================================================================================
 //////////////////////////////////
