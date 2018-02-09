@@ -32,23 +32,17 @@ let STATE = {
   userSortMethod: '',
   wUndergroundSearchType: '',
 };
+//==================================================================================================================
 
+////STATE Coordinate Generator////
 function genCoordinates() {
-  let origCoordinates = '40.538143, -105.166141';
+  let origCoordinates = STATE.latLng;
   STATE.latLngFixed = origCoordinates.replace(/\s/g, '');
   let splitCoordinates = STATE.latLngFixed.split(',');
   STATE.lat = splitCoordinates[0];
   STATE.lon = splitCoordinates[1];
-  
-  function STATEprint() {
-    // 
-    console.log(STATE);
-  }
-  STATEprint();
+  console.log(STATE);
 }
-
-
-
 //==================================================================================================================
 
 ////Get Request URL Generators////
@@ -80,6 +74,11 @@ function getRequestGenerator() {
     console.log(getGoogleMaps);
     return getGoogleMaps;
   }
+  generateNormalGeoCoding();
+  generateReverseGeoCoding();
+  generateMtbProject();
+  generateWUnderground();
+  generateGoogleMaps();
 }
 //==================================================================================================================
 
@@ -173,7 +172,6 @@ function generateLocationInput() {
   console.log(locationInput);
   return `${locationInput}`;
 }
-
 //==================================================================================================================
 
 //////////////////////////////////
@@ -187,7 +185,6 @@ function renderSearchForm() {
   let searchForm = generateLocationInput();
   $('.js-searchBox').html(searchForm);
 }
-
 //==================================================================================================================
 
 //////////////////////////////////
@@ -1028,33 +1025,49 @@ function getPoints() {
 //////////////////////////////////
 /////////Sample AJAX Call/////////
 //////////////////////////////////
-function getDataFromApi(searchTerm, callback) {
-  const settings = {
-    url: mtbProjectEndpoint,
-    data: {
-      key: mtbProjectApiKey,
-      per_page: 5
-    },
-    dataType: 'json',
-    type: 'GET',
-    success: callback
-  };
-  console.log($.ajax(settings));
-  $.ajax(settings);
-}
-
-
-
+// function getDataFromApi(searchTerm, callback) {
+//   const settings = {
+//     url: mtbProjectEndpoint,
+//     data: {
+//       key: mtbProjectApiKey,
+//       per_page: 5
+//     },
+//     dataType: 'json',
+//     type: 'GET',
+//     success: callback
+//   };
+//   console.log($.ajax(settings));
+//   $.ajax(settings);
+// }
 //==================================================================================================================
 
+//////////////////////////////////
+///////Geocoding AJAX Call////////  ** Not yet working
+//////////////////////////////////
+// function getNormalGeoCoding(searchTerm, callback) {
+//   const settings = {
+//     url: mtbProjectEndpoint,
+//     data: {
+//       key: mtbProjectApiKey,
+//       per_page: 5
+//     },
+//     dataType: 'json',
+//     type: 'GET',
+//     success: callback
+//   };
+//   console.log($.ajax(settings));
+//   $.ajax(settings);
+// }
+//==================================================================================================================
 //////////////////////////////////
 ////Function to call Renderers////
 //////////////////////////////////
 function execute() {
   renderStateList();
   renderSearchForm();
-  getDataFromApi();
+  // getDataFromApi();
   genCoordinates();
+  getRequestGenerator();
 }
 //==================================================================================================================
 //////////////////////////////////
