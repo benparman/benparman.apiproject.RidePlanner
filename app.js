@@ -5,6 +5,7 @@ const geoCodingEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json?';
 const mtbProjectEndpoint = 'https://www.mtbproject.com/data/get-trails?';
 const wUndergroundEndpoint = 'http://api.wunderground.com/api';
 const googleMapstEndpoint = 'https://maps.googleapis.com/maps/api/js?';
+const GITHUB_SEARCH_URL = 'https://api.github.com/search/repositories';
 
 //==================================================================================================================
 
@@ -19,7 +20,8 @@ const googleMapsApiKey = 'AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU';
 /////////////APP STATE////////////
 let STATE = {
   address: '',
-  latLng: '',
+  latLng: '40.538143, -105.166141',
+  latLngFixed: '',
   lat: '',
   lon: '',
   userLatLng: '',
@@ -30,6 +32,22 @@ let STATE = {
   userSortMethod: '',
   wUndergroundSearchType: '',
 };
+
+function genCoordinates() {
+  let origCoordinates = '40.538143, -105.166141';
+  STATE.latLngFixed = origCoordinates.replace(/\s/g, '');
+  let splitCoordinates = STATE.latLngFixed.split(',');
+  STATE.lat = splitCoordinates[0];
+  STATE.lon = splitCoordinates[1];
+  
+  function STATEprint() {
+    // 
+    console.log(STATE);
+  }
+  STATEprint();
+}
+
+
 
 //==================================================================================================================
 
@@ -48,7 +66,7 @@ function getRequestGenerator() {
   function generateMtbProject() {
     let getMtbProject = 
     `${mtbProjectEndpoint}lat=${STATE.userLat}&lon=${STATE.userLon}&maxDistance=${STATE.maxDistance}&maxResults=${STATE.maxResults}
-    &sort=${STATE.userSortMethod}&minLength=${STORE.minTrailLength}&minStars${STATE.minTrailStars}&key=${mtbProjectApiKey}`;
+    &sort=${STATE.userSortMethod}&minLength=${STATE.minTrailLength}&minStars${STATE.minTrailStars}&key=${mtbProjectApiKey}`;
     console.log(getMtbProject);
     return getMtbProject;
   }
@@ -81,7 +99,6 @@ function initMap() {
   });
 }
 //!!!!!!!!DO NOT MODIFY!!!!!!!!!//
-
 //==================================================================================================================
 
 //////////////////////////////////
@@ -175,6 +192,7 @@ function renderSearchForm() {
 
 //////////////////////////////////
 //Code Povided by gMaps API Docs//
+//!!!!!!!!DO NOT MODIFY!!!!!!!!!//
 //////////////////////////////////
 var map, heatmap;
 function initMap() {
@@ -1007,9 +1025,42 @@ function getPoints() {
 //!!!!!!!!DO NOT MODIFY!!!!!!!!!//
 //==================================================================================================================
 
+//////////////////////////////////
+/////////Sample AJAX Call/////////
+//////////////////////////////////
+function getDataFromApi(searchTerm, callback) {
+  const settings = {
+    url: mtbProjectEndpoint,
+    data: {
+      key: mtbProjectApiKey,
+      per_page: 5
+    },
+    dataType: 'json',
+    type: 'GET',
+    success: callback
+  };
+  console.log($.ajax(settings));
+  $.ajax(settings);
+}
+
+
+
+//==================================================================================================================
+
+//////////////////////////////////
+////Function to call Renderers////
+//////////////////////////////////
 function execute() {
   renderStateList();
   renderSearchForm();
+  getDataFromApi();
+  genCoordinates();
 }
-
+//==================================================================================================================
+//////////////////////////////////
+/////Document Ready Function//////
+//////////////////////////////////
 $(document).ready(execute);
+//==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
