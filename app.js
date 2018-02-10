@@ -20,7 +20,7 @@ const googleMapsApiKey = 'AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU';
 /////////////APP STATE////////////
 let STATE = {
   address: '',
-  latLng: '40.538143, -105.166141',
+  latLng: '',
   latLngFixed: '',
   lat: '',
   lon: '',
@@ -34,15 +34,22 @@ let STATE = {
 };
 //==================================================================================================================
 
+//*************************************************************************   
+//*****                                                              ******   
+//*****   This function has been disabled as it appears that I can   ******
+//*****   get all of this data directly from my geoCoding API call   ******
+//*****                                                              ******   
+//*************************************************************************   
 ////STATE Coordinate Generator////
-function genCoordinates() {
-  let origCoordinates = STATE.latLng;
-  STATE.latLngFixed = origCoordinates.replace(/\s/g, '');
-  let splitCoordinates = STATE.latLngFixed.split(',');
-  STATE.lat = splitCoordinates[0];
-  STATE.lon = splitCoordinates[1];
-  // console.log(STATE);
-}
+// function genCoordinates() {
+//   let origCoordinates = STATE.latLng;
+//   STATE.latLngFixed = origCoordinates.replace(/\s/g, '');
+//   let splitCoordinates = STATE.latLngFixed.split(',');
+//   STATE.lat = splitCoordinates[0];
+//   STATE.lon = splitCoordinates[1];
+//   // console.log(STATE);
+// }
+//*************************************************************************   
 //==================================================================================================================
 
 ////Get Request URL Generators////
@@ -1044,7 +1051,7 @@ function getPoints() {
 //////////////////////////////////
 ///////Geocoding AJAX Call////////  ** Not yet working
 //////////////////////////////////
-function getNormalGeoCoding(searchTerm, callback) {
+function getNormalGeoCoding(searchTerm) {
   const settings = {
     url: geoCodingEndpoint,
     data: {
@@ -1053,20 +1060,19 @@ function getNormalGeoCoding(searchTerm, callback) {
     },
     dataType: 'json',
     type: 'GET',
-    success: callback/*function(normalGeoCodingResults) {
-      console.log(normalGeoCodingResults);
-      return(normalGeoCodingResults);
-    }*/
+    success: getGeoResults
   };
   $.ajax(settings);
 };
-
 //***************************************
-function getGeoResults(placeholder) {
-  console.log(placeholder);
-  return(placeholder);
+function getGeoResults(data) {
+  STATE.address = data.results["0"].formatted_address;
+  STATE.lat = data.results["0"].geometry.location.lat.toString();
+  STATE.lon = data.results["0"].geometry.location.lng.toString();
+  STATE.latLng = (STATE.lat)+','+(STATE.lon);
+  console.log(data);
+  console.log(STATE);
 }
-
 
 //==================================================================================================================
 //////////////////////////////////
@@ -1076,9 +1082,9 @@ function execute() {
   renderStateList();
   renderSearchForm();
   // getDataFromApi();
-  genCoordinates();
+  //genCoordinates();
   getRequestGenerator();
-  getNormalGeoCoding(80526, getGeoResults);//Replace arguments with user data from forms****
+  getNormalGeoCoding(80526);//Replace arguments with user data from forms****
 }
 //==================================================================================================================
 //////////////////////////////////
