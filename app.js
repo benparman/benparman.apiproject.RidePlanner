@@ -1044,9 +1044,7 @@ function getPoints() {
 //////////////////////////////////
 ///////Geocoding AJAX Call////////  ** Not yet working
 //////////////////////////////////
-let geoResults;
 function getNormalGeoCoding(searchTerm, callback) {
-  
   const settings = {
     url: geoCodingEndpoint,
     data: {
@@ -1055,16 +1053,13 @@ function getNormalGeoCoding(searchTerm, callback) {
     },
     dataType: 'json',
     type: 'GET',
-    success: callback
+    success: function(normalGeoCodingResults) {
+      console.log(normalGeoCodingResults);
+    }
   };
-  // console.log($.ajax(settings));
+  // let geoResults = $.ajax(settings);
   $.ajax(settings);
-  geoResults = $.ajax(settings);
-  console.log(geoResults);
-  console.log(geoResults.abort);
-  console.log(geoResults.pipe);
-  console.log(geoResults.responseJSON);
-}
+};
 //==================================================================================================================
 //////////////////////////////////
 ////Function to call Renderers////
