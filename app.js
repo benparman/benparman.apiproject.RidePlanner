@@ -19,6 +19,7 @@ const googleMapsApiKey = 'AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU';
 
 /////////////APP STATE////////////
 let STATE = {
+  userInput: '',
   address: '',
   latLng: '',
   latLngFixed: '',
@@ -34,12 +35,13 @@ let STATE = {
 };
 //==================================================================================================================
 
-//*************************************************************************   
-//*****                                                              ******   
+//*************************************************************************
+//*****                                                              ******
 //*****   This function has been disabled as it appears that I can   ******
 //*****   get all of this data directly from my geoCoding API call   ******
-//*****                                                              ******   
-//*************************************************************************   
+//*****                                                              ******
+//*************************************************************************
+
 ////STATE Coordinate Generator////
 // function genCoordinates() {
 //   let origCoordinates = STATE.latLng;
@@ -49,7 +51,9 @@ let STATE = {
 //   STATE.lon = splitCoordinates[1];
 //   // console.log(STATE);
 // }
+
 //*************************************************************************   
+
 //==================================================================================================================
 
 ////Get Request URL Generators////
@@ -174,7 +178,7 @@ function generateStateList() {
 function generateLocationInput() {
   let locationInput = `<form>
   <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Where are you riding?" required="">
-  <button aria-label="submit-button" class="submit-button" type="submit">Go!</button>
+  <button aria-label="submit-button" id="js-location-submit-button" type="submit">Go!</button>
   </form>`;
   // console.log(locationInput);
   return `${locationInput}`;
@@ -1074,23 +1078,39 @@ function getGeoResults(data) {
   console.log(STATE);
 }
 
+//////////////////////////////////
+//////////Event Handlers//////////
+//////////////////////////////////
+
+//call rendering functions inside of handleUserInputs() function
+function handleUserInputs(){
+  renderSearchForm();
+//Listens for user to submit location
+  $('.js-searchBox').on('click', '#js-location-submit-button', event => {
+    event.preventDefault();
+    //update userAnswer in STORE to the user's answer choice
+    STATE.userInput = $('input[type=text][name=searchTerms]').val();
+    getNormalGeoCoding(`${STATE.userInput}`)
+  });
+}
+
 //==================================================================================================================
 //////////////////////////////////
 ////Function to call Renderers////
 //////////////////////////////////
-function execute() {
-  renderStateList();
-  renderSearchForm();
-  // getDataFromApi();
-  //genCoordinates();
-  getRequestGenerator();
-  getNormalGeoCoding(80526);//Replace arguments with user data from forms****
-}
+// function execute() {
+//   renderStateList();
+//   renderSearchForm();
+//   // getDataFromApi();
+//   //genCoordinates();
+//   getRequestGenerator();
+//   getNormalGeoCoding(`${STATE.userInput}`);//Replace arguments with user data from forms****
+// }
 //==================================================================================================================
 //////////////////////////////////
 /////Document Ready Function//////
 //////////////////////////////////
-$(document).ready(execute);
+$(document).ready(handleUserInputs);
 //==================================================================================================================
 //==================================================================================================================
 //==================================================================================================================
