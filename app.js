@@ -41,7 +41,7 @@ function genCoordinates() {
   let splitCoordinates = STATE.latLngFixed.split(',');
   STATE.lat = splitCoordinates[0];
   STATE.lon = splitCoordinates[1];
-  console.log(STATE);
+  // console.log(STATE);
 }
 //==================================================================================================================
 
@@ -54,24 +54,24 @@ function getRequestGenerator() {
   // }
   function generateReverseGeoCoding() {
     let getReverseGeocoding = `${geoCodingEndpoint}latlng=${STATE.userLatLng}&key=${geoCodingApiKey}`;
-    console.log(getReverseGeocoding);
+    // console.log(getReverseGeocoding);
     return getReverseGeocoding;
   }
   function generateMtbProject() {
     let getMtbProject = 
     `${mtbProjectEndpoint}lat=${STATE.userLat}&lon=${STATE.userLon}&maxDistance=${STATE.maxDistance}&maxResults=${STATE.maxResults}
     &sort=${STATE.userSortMethod}&minLength=${STATE.minTrailLength}&minStars${STATE.minTrailStars}&key=${mtbProjectApiKey}`;
-    console.log(getMtbProject);
+    // console.log(getMtbProject);
     return getMtbProject;
   }
   function generateWUnderground() {
     let getWUnderground = `${wUndergroundEndpoint}/${wUndergroundApiKey}/${STATE.wUndergroundSearchType}/${STATE.userLatLng}.json`;
-    console.log(getWUnderground);
+    // console.log(getWUnderground);
     return getWUnderground;
   }
   function generateGoogleMaps() {
     let getGoogleMaps = `${googleMapstEndpoint}${googleMapsApiKey}&callback=${initMap}`;
-    console.log(getGoogleMaps);
+    // console.log(getGoogleMaps);
     return getGoogleMaps;
   }
   // generateNormalGeoCoding();
@@ -169,7 +169,7 @@ function generateLocationInput() {
   <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Where are you riding?" required="">
   <button aria-label="submit-button" class="submit-button" type="submit">Go!</button>
   </form>`;
-  console.log(locationInput);
+  // console.log(locationInput);
   return `${locationInput}`;
 }
 //==================================================================================================================
@@ -1048,18 +1048,26 @@ function getNormalGeoCoding(searchTerm, callback) {
   const settings = {
     url: geoCodingEndpoint,
     data: {
-      address: 80526,
+      address: searchTerm,
       key: geoCodingApiKey
     },
     dataType: 'json',
     type: 'GET',
-    success: function(normalGeoCodingResults) {
+    success: callback/*function(normalGeoCodingResults) {
       console.log(normalGeoCodingResults);
-    }
+      return(normalGeoCodingResults);
+    }*/
   };
-  // let geoResults = $.ajax(settings);
   $.ajax(settings);
 };
+
+//***************************************
+function getGeoResults(placeholder) {
+  console.log(placeholder);
+  return(placeholder);
+}
+
+
 //==================================================================================================================
 //////////////////////////////////
 ////Function to call Renderers////
@@ -1070,7 +1078,7 @@ function execute() {
   // getDataFromApi();
   genCoordinates();
   getRequestGenerator();
-  getNormalGeoCoding();
+  getNormalGeoCoding(80526, getGeoResults);//Replace arguments with user data from forms****
 }
 //==================================================================================================================
 //////////////////////////////////
