@@ -1,9 +1,9 @@
 'use strict';
 /////////////Endpoints////////////
-const geoCodingEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json?';
-const mtbProjectEndpoint = 'https://www.mtbproject.com/data/get-trails?';
+const geoCodingEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
+const mtbProjectEndpoint = 'https://www.mtbproject.com/data/get-trails';
 const wUndergroundEndpoint = 'http://api.wunderground.com/api';
-const googleMapstEndpoint = 'https://maps.googleapis.com/maps/api/js?';
+const googleMapstEndpoint = 'https://maps.googleapis.com/maps/api/js';
 const GITHUB_SEARCH_URL = 'https://api.github.com/search/repositories';
 //==================================================================================================================
 //////////////API Keys////////////
@@ -94,24 +94,24 @@ function getNormalGeoCoding(searchTerm) {
   getMTBproject();
 }
 //==================================================================================================================
-///////MTBProject AJAX Call////////  ** Not yet working
+///////MTBProject AJAX Call////////  WORKING!  Need to update to accept user inputs
 function getMTBproject() {
   const settings = {
     url: mtbProjectEndpoint,
     data: {
-      lat: 40.4930041,
-      lon: -74.4463464,
-      maxDistance: 100, //replace with STATE.maxDistance once that's defined by user input
+      lat: 40.5293254,
+      lon: -105.1375908,
+      maxDistance: 50, //replace with STATE.maxDistance once that's defined by user input
       maxResults: 25, //do same as above
       sort: 'distance', //same....
-      minLenth: 25, //same...
+      minLength: 25, //same...
       minStars: 4, //same...
       key: mtbProjectApiKey
     },
     dataType: 'json',
     type: 'GET',
     success: function(data) {
-      console.log(data);
+    console.log(data);
     }
   };
   $.ajax(settings);
@@ -132,4 +132,3 @@ function handleUserInputs(){
 $(document).ready(handleUserInputs);
 //==================================================================================================================
 //==================================================================================================================
-
