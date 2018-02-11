@@ -26,34 +26,28 @@ let STATE = {
   maxDistance: '',
   maxResults: '',
   userSortMethod: '',
-  wUndergroundSearchType: '',
+  wUndergroundSearchType: 'conditions',
+  ///////Returned API JSON Data//
+  JSONgeoCoding: '',
+  JSONmtbProject: '',
+  JSONWUnderground: '',
 };
 //==================================================================================================================
-function generateReverseGeoCoding() {
-  let getReverseGeocoding = `${geoCodingEndpoint}latlng=${STATE.userLatLng}&key=${geoCodingApiKey}`;
-  // console.log(getReverseGeocoding);
-  return getReverseGeocoding;
-}
-function generateMtbProject() {
-  let getMtbProject = 
-  `${mtbProjectEndpoint}lat=${STATE.userLat}&lon=${STATE.userLon}&maxDistance=${STATE.maxDistance}&maxResults=${STATE.maxResults}
-  &sort=${STATE.userSortMethod}&minLength=${STATE.minTrailLength}&minStars${STATE.minTrailStars}&key=${mtbProjectApiKey}`;
-  // console.log(getMtbProject);
-  return getMtbProject;
-}
-function generateWUnderground() {
-  let getWUnderground = `${wUndergroundEndpoint}/${wUndergroundApiKey}/${STATE.wUndergroundSearchType}/${STATE.userLatLng}.json`;
-  // console.log(getWUnderground);
-  return getWUnderground;
-}
-// function generateGoogleMaps() {
-//   let getGoogleMaps = `${googleMapstEndpoint}${googleMapsApiKey}&callback=${initMap}`;
-//   // console.log(getGoogleMaps);
-//   return getGoogleMaps;
-// }
-generateReverseGeoCoding();
-generateMtbProject();
-generateWUnderground();
+////////// URL Generators //////// (Not currently used)
+let functionSTORE = {
+  // generateReverseGeoCoding: function() {
+  //   let getReverseGeocoding = `${geoCodingEndpoint}latlng=${STATE.userLatLng}&key=${geoCodingApiKey}`;
+  //   // console.log(getReverseGeocoding);
+  //   return getReverseGeocoding;
+  // },
+  // generateMtbProject: function() {
+  //   let getMTBurl = 
+  //   `${mtbProjectEndpoint}lat=${STATE.userLat}&lon=${STATE.userLon}&maxDistance=${STATE.maxDistance}&maxResults=${STATE.maxResults}
+  //   &sort=${STATE.userSortMethod}&minLength=${STATE.minTrailLength}&minStars${STATE.minTrailStars}&key=${mtbProjectApiKey}`;
+  //   // console.log(getMTBurl);
+  //   return getMTBurl;
+  // }
+};
 //==================================================================================================================
 /////////HTML Generators//////////
 function generateLocationInput() {
@@ -86,12 +80,13 @@ function getNormalGeoCoding(searchTerm) {
       STATE.lat = data.results['0'].geometry.location.lat;
       STATE.lon = data.results['0'].geometry.location.lng;
       STATE.latLng = (STATE.lat)+','+(STATE.lon);
+      STATE.JSONgeoCoding = data;
       console.log(data);
       console.log(STATE);
+      getMTBproject();
     }
   };
   $.ajax(settings);
-  getMTBproject();
 }
 //==================================================================================================================
 ///////MTBProject AJAX Call////////  WORKING!  Need to update to accept user inputs
@@ -99,8 +94,8 @@ function getMTBproject() {
   const settings = {
     url: mtbProjectEndpoint,
     data: {
-      lat: 40.5293254,
-      lon: -105.1375908,
+      lat: STATE.lat,
+      lon: STATE.lon,
       maxDistance: 50, //replace with STATE.maxDistance once that's defined by user input
       maxResults: 25, //do same as above
       sort: 'distance', //same....
@@ -111,7 +106,25 @@ function getMTBproject() {
     dataType: 'json',
     type: 'GET',
     success: function(data) {
-    console.log(data);
+      STATE.JSONmtbProject = data;
+      console.log(data);
+      getWUnderground();
+    }
+  };
+  $.ajax(settings);
+}
+//==================================================================================================================
+///////WUnderground AJAX Call////////  WORKING! Need to update to accept user inputs
+function getWUnderground() {
+  let settings = {
+    url : `${wUndergroundEndpoint}/${wUndergroundApiKey}/${STATE.wUndergroundSearchType}/q/${STATE.latLng}.json`,
+    dataType : 'jsonp',
+    success : function(parsed_json) {
+      // var location = parsed_json['location']['city'];
+      // var temp_f = parsed_json['current_observation']['temp_f'];
+      // alert('Current temperature in ' + location + ' is: ' + temp_f);
+      STATE.JSONWUnderground = parsed_json;
+      console.log(parsed_json);
     }
   };
   $.ajax(settings);
