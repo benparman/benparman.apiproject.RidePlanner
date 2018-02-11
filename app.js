@@ -55,9 +55,7 @@ generateReverseGeoCoding();
 generateMtbProject();
 generateWUnderground();
 //==================================================================================================================
-//////////////////////////////////
 /////////HTML Generators//////////
-//////////////////////////////////
 function generateLocationInput() {
   let locationInput = `<form>
   <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Where are you riding?" required="">
@@ -66,17 +64,14 @@ function generateLocationInput() {
   // console.log(locationInput);
   return `${locationInput}`;
 }
-//////////////////////////////////
+//==================================================================================================================
 //////////HTML Renderers//////////
-//////////////////////////////////
 function renderSearchForm() {
   let searchForm = generateLocationInput();
   $('.js-searchBox').html(searchForm);
 }
 //==================================================================================================================
-//////////////////////////////////
 ///////Geocoding AJAX Call////////  ** Not yet working
-//////////////////////////////////
 function getNormalGeoCoding(searchTerm) {
   const settings = {
     url: geoCodingEndpoint,
@@ -86,22 +81,19 @@ function getNormalGeoCoding(searchTerm) {
     },
     dataType: 'json',
     type: 'GET',
-    success: getGeoResults
+    success: function(data) {
+      STATE.address = data.results["0"].formatted_address;
+      STATE.lat = data.results["0"].geometry.location.lat;
+      STATE.lon = data.results["0"].geometry.location.lng;
+      STATE.latLng = (STATE.lat)+','+(STATE.lon);
+      console.log(data);
+      console.log(STATE);
+    }
   };
   $.ajax(settings);
 }
-//***************************************
-function getGeoResults(data) {
-  STATE.address = data.results["0"].formatted_address;
-  STATE.lat = data.results["0"].geometry.location.lat;
-  STATE.lon = data.results["0"].geometry.location.lng;
-  STATE.latLng = (STATE.lat)+','+(STATE.lon);
-  console.log(data);
-  console.log(STATE);
-}
-//////////////////////////////////
+//==================================================================================================================
 //////////Event Handlers//////////
-//////////////////////////////////
 function handleUserInputs(){
   renderSearchForm();
   //Listens for user to submit location
@@ -113,9 +105,7 @@ function handleUserInputs(){
     // generateGoogleMaps();
   });
 }
-//////////////////////////////////
 /////Document Ready Function//////
-//////////////////////////////////
 $(document).ready(handleUserInputs);
 //==================================================================================================================
 //==================================================================================================================
