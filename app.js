@@ -71,7 +71,7 @@ function renderSearchForm() {
   $('.js-searchBox').html(searchForm);
 }
 //==================================================================================================================
-///////Geocoding AJAX Call////////  ** Not yet working
+///////Geocoding AJAX Call////////
 function getNormalGeoCoding(searchTerm) {
   const settings = {
     url: geoCodingEndpoint,
@@ -82,12 +82,36 @@ function getNormalGeoCoding(searchTerm) {
     dataType: 'json',
     type: 'GET',
     success: function(data) {
-      STATE.address = data.results["0"].formatted_address;
-      STATE.lat = data.results["0"].geometry.location.lat;
-      STATE.lon = data.results["0"].geometry.location.lng;
+      STATE.address = data.results['0'].formatted_address;
+      STATE.lat = data.results['0'].geometry.location.lat;
+      STATE.lon = data.results['0'].geometry.location.lng;
       STATE.latLng = (STATE.lat)+','+(STATE.lon);
       console.log(data);
       console.log(STATE);
+    }
+  };
+  $.ajax(settings);
+  getMTBproject();
+}
+//==================================================================================================================
+///////MTBProject AJAX Call////////  ** Not yet working
+function getMTBproject() {
+  const settings = {
+    url: mtbProjectEndpoint,
+    data: {
+      lat: 40.4930041,
+      lon: -74.4463464,
+      maxDistance: 100, //replace with STATE.maxDistance once that's defined by user input
+      maxResults: 25, //do same as above
+      sort: 'distance', //same....
+      minLenth: 25, //same...
+      minStars: 4, //same...
+      key: mtbProjectApiKey
+    },
+    dataType: 'json',
+    type: 'GET',
+    success: function(data) {
+      console.log(data);
     }
   };
   $.ajax(settings);
@@ -101,11 +125,11 @@ function handleUserInputs(){
     event.preventDefault();
     //update userAnswer in STORE to the user's answer choice
     STATE.userInput = $('input[type=text][name=searchTerms]').val();
-    getNormalGeoCoding(`${STATE.userInput}`)
-    // generateGoogleMaps();
+    getNormalGeoCoding(`${STATE.userInput}`);
   });
 }
 /////Document Ready Function//////
 $(document).ready(handleUserInputs);
 //==================================================================================================================
 //==================================================================================================================
+
