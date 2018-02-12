@@ -116,22 +116,40 @@ function getMTBproject() {
 //=================================================================================
 ///////WUnderground AJAX Call////////  WORKING! Update to accept user inputs
 function getWUnderground() {
-  let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
-                      `/${STATE.wUndergroundSearchType}/q/${STATE.latLng}.json`;
-  let conditions = {
-    url : conditionsURL,
-    jsonp: 'callback',  //What does this do?
-    dataType : 'jsonp',
-    success : function(weatherData) {
-      STATE.JSONWUnderground.conditions = weatherData;
-      console.log('WUnderground Response');
-      console.log(weatherData);
-    }
-  };
-  $.ajax(conditions);
-  $.ajax(conditions);
-  $.ajax(conditions);
+  let searchType = ['alerts','conditions','forecast','history','hourly','planner','webcams'];
+  for (let i = 0; i<searchType.length; i++) {
+    let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
+                      `/${searchType[i]}/q/${STATE.latLng}.json`;
+    let conditions = {
+      url : conditionsURL,
+      jsonp: 'callback',  //What does this do?
+      dataType : 'jsonp',
+      success : function(weatherData) {
+        STATE.JSONWUnderground[i] = weatherData;
+      }
+    };
+    $.ajax(conditions);
+  }
+  console.log('WUnderground Response');
+  console.log(STATE.JSONWUnderground);
 }
+
+
+///////WUnderground AJAX Call////////  WORKING! Update to accept user inputs
+// function getWUnderground() {
+//   let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
+//                       `/${STATE.wUndergroundSearchType}/q/${STATE.latLng}.json`;
+//   let conditions = {
+//     url : conditionsURL,
+//     jsonp: 'callback',  //What does this do?
+//     dataType : 'jsonp',
+//     success : function(weatherData) {
+//       STATE.JSONWUnderground.conditions = weatherData;
+//       console.log('WUnderground Response');
+//       console.log(weatherData);
+//     }
+//   };
+//   $.ajax(conditions);
 //=================================================================================
 //////////Event Handlers//////////
 function handleUserInputs(){
