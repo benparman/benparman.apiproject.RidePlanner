@@ -11,9 +11,9 @@ body {
   border-style: outset inset inset outset;
   border-radius: 5px;
 }
-.js-searchbox {
+/* .js-searchbox {
   padding-left: 33%;
-}
+} */
 form {
   margin: 30px 0 60px 0;
 }
@@ -24,7 +24,7 @@ select {
   background: rgb(0, 0, 0);
 }      
 #map {
-  height: 50%;
+  height: 400px;
   width: 50%;
   margin: auto;
   border: solid black 5px;
