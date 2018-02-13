@@ -55,28 +55,7 @@ function generateLocationInput() {
   return `${locationInput}`;
 }
 
-function generateGoogleMap() {
-  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
-  let googleMapHTML = `<h3>Ride Map</h3>
-  <div id="map"></div>
-  <script>
-    function initMap() {
-      
-      let map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
-        center: ${currentLocation}
-      });
-      let marker = new google.maps.Marker({
-        position: ${currentLocation},
-        map: map
-      });
-    }
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
-  </script>`;
-  return googleMapHTML;
-}
+
 
 function generateGoogleMap2() {
   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
@@ -88,6 +67,11 @@ function generateGoogleMap2() {
     markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
   }
   console.log(markerLocations);
+
+//===========================New marker-maker loop==============================
+
+
+
   let googleMapHTML2 = 
   `<div id="map"></div>
     <script>
@@ -96,7 +80,8 @@ function generateGoogleMap2() {
 
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 6,
-          center: ${currentLocation}
+          center: ${currentLocation},
+          mapTypeId: 'terrain'
         });
 
         // Create an array of alphabetical characters used to label the markers.
@@ -124,52 +109,10 @@ function generateGoogleMap2() {
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
     </script>`;
 
-  console.log(`${googleMapHTML2}`) ;
+  // console.log(`${googleMapHTML2}`) ;
   return(`${googleMapHTML2}`);
 }
-//*****************************************************************************
-//**************DOESN'T WORK, BUT FIX IT LATER ********************************
-/*
-function generateGoogleMap() {
-  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
-  let mtbLocations = [];
-  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
-    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
-    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);    
-  }
-  let googleMapHTML = `<h3>Ride Map</h3>
-  <div id="map"></div>
-  <script>
-    let htmlMtbLocations = ${mtbLocations};
-    function initMap() {
-      let map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
-        center: ${currentLocation},
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-    let marker;
-    for (let i = 0; i < ${mtbLocations}.length; i++) { 
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(${mtbLocations}[i][0].latitude, ${mtbLocations}[i][0].longitude),
-        map: map
-      });
 
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
-  </script>`;
-  return googleMapHTML;
-}    //may need add/delete one curly bracket here
-*/
-//**************DOESN'T WORK, BUT FIX IT LATER ********************************
-//*****************************************************************************
 
 
 
@@ -275,3 +218,96 @@ $(document).ready(handleUserInputs);
 //=================================================================================
 //=================================================================================
 
+
+//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
+//=================================================================================
+
+
+
+//=================================================================================
+//=================================================================================
+//*****************************************************************************
+//**************DOESN'T WORK, BUT FIX IT LATER ********************************
+/*
+function generateGoogleMap() {
+  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
+  let mtbLocations = [];
+  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
+    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
+    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);    
+  }
+  let googleMapHTML = `<h3>Ride Map</h3>
+  <div id="map"></div>
+  <script>
+    let htmlMtbLocations = ${mtbLocations};
+    function initMap() {
+      let map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: ${currentLocation},
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+    let marker;
+    for (let i = 0; i < ${mtbLocations}.length; i++) { 
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(${mtbLocations}[i][0].latitude, ${mtbLocations}[i][0].longitude),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
+  </script>`;
+  return googleMapHTML;
+}    //may need add/delete one curly bracket here
+*/
+//**************DOESN'T WORK, BUT FIX IT LATER ********************************
+//*****************************************************************************
+//=================================================================================
+//=================================================================================
+
+
+
+
+
+//=================================================================================
+//=================================================================================
+
+
+//old google map maker function
+
+
+// function generateGoogleMap() {
+//   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
+//   let googleMapHTML = `<h3>Ride Map</h3>
+//   <div id="map"></div>
+//   <script>
+//     function initMap() {
+      
+//       let map = new google.maps.Map(document.getElementById('map'), {
+//         zoom: 11,
+//         center: ${currentLocation}
+//       });
+//       let marker = new google.maps.Marker({
+//         position: ${currentLocation},
+//         map: map
+//       });
+//     }
+//   </script>
+//   <script async defer
+//   src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
+//   </script>`;
+//   return googleMapHTML;
+// }
