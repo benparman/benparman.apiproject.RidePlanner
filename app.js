@@ -56,7 +56,7 @@ function generateLocationInput() {
 }
 
 
-
+/////////Google Maps Generator//////////
 function generateGoogleMap2() {
   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
   let mtbLocations = [];
@@ -67,38 +67,28 @@ function generateGoogleMap2() {
     markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
   }
   console.log(markerLocations);
-
-//===========================New marker-maker loop==============================
-
-
-
   let googleMapHTML2 = 
   `<div id="map"></div>
     <script>
-
       function initMap() {
-
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 6,
           center: ${currentLocation},
           mapTypeId: 'terrain'
         });
-
         // Create an array of alphabetical characters used to label the markers.
         var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
+        
         // Add some markers to the map.
         // Note: The code uses the JavaScript Array.prototype.map() method to
         // create an array of markers based on a given "locations" array.
         // The map() method here has nothing to do with the Google Maps API.
-
         var markers = locations.map(function(location, i) {
           return new google.maps.Marker({
             position: location,
             label: labels[i % labels.length]
           });
         });
-
         // Add a marker clusterer to manage the markers.
         var markerCluster = new MarkerClusterer(map, markers,
             {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
@@ -258,7 +248,6 @@ function generateGoogleMap() {
         position: new google.maps.LatLng(${mtbLocations}[i][0].latitude, ${mtbLocations}[i][0].longitude),
         map: map
       });
-
       google.maps.event.addListener(marker, 'click', (function(marker, i) {
         return function() {
           infowindow.setContent(locations[i][0]);
