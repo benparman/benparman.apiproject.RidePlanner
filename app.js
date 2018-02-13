@@ -54,6 +54,7 @@ function generateLocationInput() {
   // console.log(locationInput);
   return `${locationInput}`;
 }
+
 function generateGoogleMap() {
   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
   let googleMapHTML = `<h3>Ride Map</h3>
@@ -76,6 +77,102 @@ function generateGoogleMap() {
   </script>`;
   return googleMapHTML;
 }
+
+function generateGoogleMap2() {
+  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
+  let mtbLocations = [];
+  let markerLocations = [];
+  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
+    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
+    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);
+    markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
+  }
+  console.log(markerLocations);
+  let googleMapHTML2 = 
+  `<div id="map"></div>
+    <script>
+
+      function initMap() {
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 6,
+          center: ${currentLocation}
+        });
+
+        // Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+          });
+        });
+
+        // Add a marker clusterer to manage the markers.
+        var markerCluster = new MarkerClusterer(map, markers,
+            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      }
+      var locations = [${markerLocations}];
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
+    </script>`;
+
+  console.log(`${googleMapHTML2}`) ;
+  return(`${googleMapHTML2}`);
+}
+//*****************************************************************************
+//**************DOESN'T WORK, BUT FIX IT LATER ********************************
+/*
+function generateGoogleMap() {
+  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
+  let mtbLocations = [];
+  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
+    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
+    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);    
+  }
+  let googleMapHTML = `<h3>Ride Map</h3>
+  <div id="map"></div>
+  <script>
+    let htmlMtbLocations = ${mtbLocations};
+    function initMap() {
+      let map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 11,
+        center: ${currentLocation},
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+      });
+    let marker;
+    for (let i = 0; i < ${mtbLocations}.length; i++) { 
+      marker = new google.maps.Marker({
+        position: new google.maps.LatLng(${mtbLocations}[i][0].latitude, ${mtbLocations}[i][0].longitude),
+        map: map
+      });
+
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+          infowindow.setContent(locations[i][0]);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+    }
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
+  </script>`;
+  return googleMapHTML;
+}    //may need add/delete one curly bracket here
+*/
+//**************DOESN'T WORK, BUT FIX IT LATER ********************************
+//*****************************************************************************
+
+
+
 //=================================================================================
 //////////HTML Renderers//////////
 function renderSearchForm() {
@@ -83,7 +180,7 @@ function renderSearchForm() {
   $('.js-searchBox').html(searchForm);
 }
 function renderGoogleMap() {
-  let googleMapRendered = generateGoogleMap();
+  let googleMapRendered = generateGoogleMap2();
   $('#js-google_map').html(googleMapRendered);
 }
 //=================================================================================
@@ -108,7 +205,6 @@ function getNormalGeoCoding(searchTerm) {
       console.log('GeoCoding Response');
       console.log(data);
       getMTBproject();
-      renderGoogleMap();
     }
   };
   $.ajax(settings);
@@ -160,6 +256,7 @@ function getWUnderground() {
   }
   console.log('WUnderground Response');
   console.log(STATE.JSONWUnderground);
+  renderGoogleMap();
 }
 //=================================================================================
 //////////Event Handlers//////////
