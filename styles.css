@@ -1,6 +1,21 @@
 body {
   background: rgba(0, 0, 0, 0.2);
 }
+
+.titleText {
+  margin: 25px;
+  text-align: center;
+}
+
+.titleText h1 {
+  text-decoration: underline;
+}
+
+.js-searchBox {
+  margin: 0 auto;
+  text-align: center;
+}
+
 .js-forms {
   width: 280px;
   height: 80px;
