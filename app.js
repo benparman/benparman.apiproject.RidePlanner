@@ -55,10 +55,11 @@ function generateLocationInput() {
   return `${locationInput}`;
 }
 
-
+//=================================================================================
 /////////Google Maps Generator//////////
 function generateGoogleMap2() {
   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
+  console.log(currentLocation);
   let mtbLocations = [];
   let markerLocations = [];
   for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
@@ -67,43 +68,53 @@ function generateGoogleMap2() {
     markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
   }
   console.log(markerLocations);
+  console.log(mtbLocations);
   let googleMapHTML2 = 
   `<div id="map"></div>
-    <script>
-      function initMap() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 6,
-          center: ${currentLocation},
-          mapTypeId: 'terrain'
+  <script>
+
+  function initMap() {
+
+        var mapOptions = {
+          mapTypeId: 'terrain',
+          zoom: 9,
+          center: ${currentLocation}
+        };
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        var markerOptions = {
+          position: ${currentLocation},
+          map: map
+        }
+
+        var markerOptions2 = {
+          position: {lat: 39.4242, lng: -106.3012},
+          map: map
+        }
+
+        var marker = new google.maps.Marker(markerOptions);
+        var marker2 = new google.maps.Marker(markerOptions2);
+
+        var infoWindowOptions = {
+          content: '<h1>Buenos Dias Senor</h1>'
+        }
+        var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+
+        marker.addListener('click', function(){
+          infoWindow.open(map, marker);
         });
-        // Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        
-        // Add some markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "locations" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
-          });
-        });
-        
-        // Add a marker clusterer to manage the markers.
-        var markerCluster = new MarkerClusterer(map, markers,
-            {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
-      }
-      var locations = [${markerLocations}];
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
-    </script>`;
+
+  }
+ 
+  </script>
+  <script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
+  </script>`;
 
   // console.log(`${googleMapHTML2}`) ;
   return(`${googleMapHTML2}`);
 }
-
+//=================================================================================
 
 
 
@@ -301,3 +312,17 @@ function generateGoogleMap() {
 //   </script>`;
 //   return googleMapHTML;
 // }
+
+/*  old marker maker
+// Create an array of alphabetical characters used to label the markers.
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        
+        // Add some markers to the map.
+        // Note: The code uses the JavaScript Array.prototype.map() method to
+        // create an array of markers based on a given "locations" array.
+        // The map() method here has nothing to do with the Google Maps API.
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            label: labels[i % labels.length]
+*/
