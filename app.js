@@ -104,15 +104,16 @@ function generateGoogleMap2() {
                                   //   infoWindow.open(map, marker);
                                   // });
 
+        function addMarker(){
         var locations = [${markerLocations}];
-
         var markers = locations.map(function(location, i) {
           return new google.maps.Marker({
             position: location,
             map: map
           });
         });
-
+      }
+      addMarker();
   }
  
   </script>
