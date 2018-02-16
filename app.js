@@ -66,6 +66,7 @@ function generateGoogleMap2() {
     // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
     mtbLocations.push([STATE.JSONmtbProject.trails[i]]);
     markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
+
   }
   console.log(markerLocations);
   console.log(mtbLocations);
@@ -104,16 +105,15 @@ function generateGoogleMap2() {
                                   //   infoWindow.open(map, marker);
                                   // });
 
-        function addMarker(){
-        var locations = [${markerLocations}];
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
+        function addMarker(props){
+          var marker = new google.maps.Marker(
+            {
+            position: props.coords,
             map: map
           });
-        });
       }
-      addMarker();
+      addMarker({coords: {lat: 39.4242, lng: -106.3012}});
+      addMarker({coords: {lat: 39.5011, lng: -106.1609}});
   }
  
   </script>
