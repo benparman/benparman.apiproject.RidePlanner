@@ -92,16 +92,25 @@ function generateGoogleMap2() {
           map: map
         }
 
-        var marker = new google.maps.Marker(markerOptions);
-        var marker2 = new google.maps.Marker(markerOptions2);
+                                  // var marker = new google.maps.Marker(markerOptions);
+                                  // var marker2 = new google.maps.Marker(markerOptions2);
 
-        var infoWindowOptions = {
-          content: '<h1>Buenos Dias Senor</h1>'
-        }
-        var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
+                                  // var infoWindowOptions = {
+                                  //   content: '<h1>Buenos Dias Senor</h1>'
+                                  // }
+                                  // var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
 
-        marker.addListener('click', function(){
-          infoWindow.open(map, marker);
+                                  // marker.addListener('click', function(){
+                                  //   infoWindow.open(map, marker);
+                                  // });
+
+        var locations = [${markerLocations}];
+
+        var markers = locations.map(function(location, i) {
+          return new google.maps.Marker({
+            position: location,
+            map: map
+          });
         });
 
   }
