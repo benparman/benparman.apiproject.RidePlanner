@@ -29,8 +29,9 @@ const STATE = {
   wUndergroundSearchType: 'conditions',
   ///////Returned API JSON Data//
   JSONgeoCoding: {},  //refactor these
-  JSONmtbProject: {},
+  JSONmtbProject: [],
   JSONWUnderground: {},
+  markerCoords: [],
 };
 //=================================================================================
 ////////// URL Generators //////// (Not currently used)
@@ -60,60 +61,34 @@ function generateLocationInput() {
 function generateGoogleMap2() {
   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
   console.log(currentLocation);
-  let mtbLocations = [];
   let markerLocations = [];
   for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
-    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
-    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);
-    markerLocations.push(`{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}`);
-
+    markerLocations.push(`{coords:{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}}`);
+    STATE.markerCoords.push(`[{coords:{lat:${STATE.JSONmtbProject.trails[i].latitude},lng:${STATE.JSONmtbProject.trails[i].longitude}}},name:${STATE.JSONmtbProject.trails[i].name}`);
   }
   console.log(markerLocations);
-  console.log(mtbLocations);
+  console.log(STATE.markerCoords);
   let googleMapHTML2 = 
   `<div id="map"></div>
   <script>
-
   function initMap() {
+    var mapOptions = {
+      mapTypeId: 'terrain',
+      zoom: 8,
+      center: ${currentLocation}
+    };
+    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-        var mapOptions = {
-          mapTypeId: 'terrain',
-          zoom: 9,
-          center: ${currentLocation}
-        };
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-        var markerOptions = {
-          position: ${currentLocation},
-          map: map
-        }
-
-        var markerOptions2 = {
-          position: {lat: 39.4242, lng: -106.3012},
-          map: map
-        }
-
-                                  // var marker = new google.maps.Marker(markerOptions);
-                                  // var marker2 = new google.maps.Marker(markerOptions2);
-
-                                  // var infoWindowOptions = {
-                                  //   content: '<h1>Buenos Dias Senor</h1>'
-                                  // }
-                                  // var infoWindow = new google.maps.InfoWindow(infoWindowOptions);
-
-                                  // marker.addListener('click', function(){
-                                  //   infoWindow.open(map, marker);
-                                  // });
-
-        function addMarker(props){
-          var marker = new google.maps.Marker(
-            {
-            position: props.coords,
-            map: map
-          });
-      }
-      addMarker({coords: {lat: 39.4242, lng: -106.3012}});
-      addMarker({coords: {lat: 39.5011, lng: -106.1609}});
+    function addMarker(location){
+      var markers = location.map(function(location) {
+        return new google.maps.Marker({
+          position: location.coords,
+          map: map,
+          title: '<h1>Test</h1>'
+        });
+      });
+    }
+  addMarker([${markerLocations}]);
   }
  
   </script>
