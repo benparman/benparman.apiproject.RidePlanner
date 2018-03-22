@@ -67,8 +67,8 @@ function generateGoogleMap2() {
     STATE.markerCoords.push(`[{coords:{lat:${STATE.JSONmtbProject.trails[i].latitude},lng:${STATE.JSONmtbProject.trails[i].longitude}}},name:${STATE.JSONmtbProject.trails[i].name}`);
   }
   console.log(markerLocations);
-  console.log(STATE.markerCoords);
-  let googleMapHTML2 = 
+  console.log(STATE.markerCoords);  //From this line to line 116 - change this so no functions are rendered to the dom - all functions
+  let googleMapHTML2 =              // should be in JS file and render only HTML to the DOM - 
   `<div id="map"></div>
   <script>
   function initMap() {
