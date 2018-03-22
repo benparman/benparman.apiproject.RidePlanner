@@ -29,7 +29,7 @@ const STATE = {
   wUndergroundSearchType: 'conditions',
   ///////Returned API JSON Data//
   JSONgeoCoding: {},  //refactor these
-  JSONmtbProject: [],
+  JSONmtbProject: null,
   JSONWUnderground: {},
   markerCoords: [],
 };
@@ -90,7 +90,26 @@ function generateGoogleMap2() {
     }
   addMarker([${markerLocations}]);
   }
+
+  //Need to create InfoWindow to display information relevant to markers that 
+  //will reference data from within the JSONmtbProject STATE variable.
  
+  
+  var infoWindowContent;
+  infoWindowContent = '<h1>TRAIL NAME!</h1>';
+
+  var infoWindow = new google.maps.InfoWindow({
+    content: infoWindowContent
+  });
+
+  marker.addListener('click', function() {
+    infoWindow.open(map, marker);
+  });
+  console.log(marker);
+  console.log(markers);
+
+    
+
   </script>
   <script async defer
   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
