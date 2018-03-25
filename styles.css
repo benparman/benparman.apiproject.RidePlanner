@@ -38,7 +38,7 @@ select {
   color: rgb(220, 220, 220);
   background: rgb(0, 0, 0);
 }      
-#map {
+#js-google_map {
   height: 400px;
   width: 50%;
   margin: auto;

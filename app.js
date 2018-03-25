@@ -58,65 +58,43 @@ function generateLocationInput() {
 
 //=================================================================================
 /////////Google Maps Generator//////////
-function generateGoogleMap2() {
-  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
-  console.log(currentLocation);
-  let markerLocations = [];
-  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
-    markerLocations.push(`{coords:{lat: ${STATE.JSONmtbProject.trails[i].latitude}, lng: ${STATE.JSONmtbProject.trails[i].longitude}}}`);
-    STATE.markerCoords.push(`[{coords:{lat:${STATE.JSONmtbProject.trails[i].latitude},lng:${STATE.JSONmtbProject.trails[i].longitude}}},name:${STATE.JSONmtbProject.trails[i].name}`);
-  }
-  console.log(markerLocations);
-  console.log(STATE.markerCoords);  //From this line to line 116 - change this so no functions are rendered to the dom - all functions
-  let googleMapHTML2 =              // should be in JS file and render only HTML to the DOM - 
-  `<div id="map"></div>
-  <script>
-  function initMap() {
-    var mapOptions = {
-      mapTypeId: 'terrain',
-      zoom: 8,
-      center: ${currentLocation}
-    };
-    var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+function addMarkers(location, map){
+  location.forEach(function(location) {
+    var marker = new google.maps.Marker({
+      position: location.coords,
+      map: map,
+      title: location.title
+    });
+    let infowindow = new google.maps.InfoWindow({ content: location.tooltip });
+    marker.addListener('click', function() { infowindow.open(map, marker); });
+  });
+}
 
-    function addMarker(location){
-      var markers = location.map(function(location) {
-        return new google.maps.Marker({
-          position: location.coords,
-          map: map,
-          title: '<h1>Test</h1>'
-        });
-      });
-    }
-  addMarker([${markerLocations}]);
-  }
+function initMap(currentLocation, markerLocations) {
+  var mapOptions = {
+    mapTypeId: 'terrain',
+    zoom: 8,
+    center: currentLocation
+  };
+  var map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
 
-  //Need to create InfoWindow to display information relevant to markers that 
-  //will reference data from within the JSONmtbProject STATE variable.
- 
   
-  var infoWindowContent;
-  infoWindowContent = '<h1>TRAIL NAME!</h1>';
+  addMarkers(markerLocations, map);
+}
 
-  var infoWindow = new google.maps.InfoWindow({
-    content: infoWindowContent
+function generateGoogleMap2() {
+  let currentLocation = {lat: STATE.lat, lng: STATE.lon};
+  let markerLocations = STATE.JSONmtbProject.trails.map(function(trail){
+    return {
+      title: trail.name,
+      coords: {
+        lat: trail.latitude,
+        lng: trail.longitude
+      },
+      tooltip: `<h2>${trail.name}</h2><p>ASDFLKJ asdf;lkhas</p>`
+    };
   });
-
-  marker.addListener('click', function() {
-    infoWindow.open(map, marker);
-  });
-  console.log(marker);
-  console.log(markers);
-
-    
-
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU&callback=initMap">
-  </script>`;
-
-  // console.log(`${googleMapHTML2}`) ;
-  return(`${googleMapHTML2}`);
+  initMap(currentLocation, markerLocations);
 }
 //=================================================================================
 
@@ -129,8 +107,8 @@ function renderSearchForm() {
   $('.js-searchBox').html(searchForm);
 }
 function renderGoogleMap() {
-  let googleMapRendered = generateGoogleMap2();
-  $('#js-google_map').html(googleMapRendered);
+  generateGoogleMap2();
+  // $('#js-google_map').html(googleMapRendered);
 }
 //=================================================================================
 ///////Geocoding AJAX Call////////
