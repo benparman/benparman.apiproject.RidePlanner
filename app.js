@@ -34,16 +34,6 @@ const STATE = {
   markerCoords: [],
 };
 //=================================================================================
-////////// URL Generators //////// (Not currently used)
-// let functionSTORE = {
-//   generateReverseGeoCoding: function() {
-//     let getReverseGeocoding = `${geoCodingEndpoint}latlng=${STATE.userLatLng}
-//     &key=${geoCodingApiKey}`;
-//     // console.log(getReverseGeocoding);
-//     return getReverseGeocoding;
-//   }
-// };
-//=================================================================================
 /////////HTML Generators//////////
 function generateLocationInput() {
   let locationInput = `<form>
@@ -55,7 +45,6 @@ function generateLocationInput() {
   // console.log(locationInput);
   return `${locationInput}`;
 }
-
 //=================================================================================
 /////////Google Maps Generator//////////
 function addMarkers(location, map){
@@ -69,7 +58,6 @@ function addMarkers(location, map){
     marker.addListener('click', function() { infowindow.open(map, marker); });
   });
 }
-
 function initMap(currentLocation, markerLocations) {
   var mapOptions = {
     mapTypeId: 'terrain',
@@ -77,12 +65,9 @@ function initMap(currentLocation, markerLocations) {
     center: currentLocation
   };
   var map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
-
-  
   addMarkers(markerLocations, map);
 }
-
-function generateGoogleMap2() {
+function generateGoogleMap() {
   let currentLocation = {lat: STATE.lat, lng: STATE.lon};
   let markerLocations = STATE.JSONmtbProject.trails.map(function(trail){
     return {
@@ -91,15 +76,21 @@ function generateGoogleMap2() {
         lat: trail.latitude,
         lng: trail.longitude
       },
-      tooltip: `<h2>${trail.name}</h2><p>ASDFLKJ asdf;lkhas</p>`
+      tooltip: 
+        `
+        <h2>${trail.name} - ${trail.location}</h2>
+        <h4>${trail.summary}</h4>
+        <p>Difficuly: ${trail.difficulty}</p>
+        <p>Length: ${trail.length}</p>
+        <p>User Rating: ${trail.stars}</p>
+        <img src="${trail.imgSmall}" alt="Trail Photo" height="100" width="100"><br>
+        <a href="${trail.url}" target = "_blank">MTB Project</a>
+        `
     };
   });
   initMap(currentLocation, markerLocations);
+  //console.log(markerLocations); //remove this later
 }
-//=================================================================================
-
-
-
 //=================================================================================
 //////////HTML Renderers//////////
 function renderSearchForm() {
@@ -107,7 +98,7 @@ function renderSearchForm() {
   $('.js-searchBox').html(searchForm);
 }
 function renderGoogleMap() {
-  generateGoogleMap2();
+  generateGoogleMap();
   // $('#js-google_map').html(googleMapRendered);
 }
 //=================================================================================
@@ -200,111 +191,3 @@ function handleUserInputs(){
 /////Document Ready Function//////
 $(document).ready(handleUserInputs);
 //=================================================================================
-//=================================================================================
-
-
-//=================================================================================
-//=================================================================================
-//=================================================================================
-//=================================================================================
-//=================================================================================
-//=================================================================================
-//=================================================================================
-//=================================================================================
-
-
-
-//=================================================================================
-//=================================================================================
-//*****************************************************************************
-//**************DOESN'T WORK, BUT FIX IT LATER ********************************
-/*
-function generateGoogleMap() {
-  let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
-  let mtbLocations = [];
-  for (let i =0; i<STATE.JSONmtbProject.trails.length; i++) {
-    // mtbLocations.push([STATE.JSONmtbProject.trails[i].name, STATE.JSONmtbProject.trails[i].latitude, STATE.JSONmtbProject.trails[i].latitude]);
-    mtbLocations.push([STATE.JSONmtbProject.trails[i]]);    
-  }
-  let googleMapHTML = `<h3>Ride Map</h3>
-  <div id="map"></div>
-  <script>
-    let htmlMtbLocations = ${mtbLocations};
-    function initMap() {
-      let map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 11,
-        center: ${currentLocation},
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-    let marker;
-    for (let i = 0; i < ${mtbLocations}.length; i++) { 
-      marker = new google.maps.Marker({
-        position: new google.maps.LatLng(${mtbLocations}[i][0].latitude, ${mtbLocations}[i][0].longitude),
-        map: map
-      });
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-          infowindow.setContent(locations[i][0]);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }
-  </script>
-  <script async defer
-  src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
-  </script>`;
-  return googleMapHTML;
-}    //may need add/delete one curly bracket here
-*/
-//**************DOESN'T WORK, BUT FIX IT LATER ********************************
-//*****************************************************************************
-//=================================================================================
-//=================================================================================
-
-
-
-
-
-//=================================================================================
-//=================================================================================
-
-
-//old google map maker function
-
-
-// function generateGoogleMap() {
-//   let currentLocation = `{lat: ${STATE.lat}, lng: ${STATE.lon}}`;
-//   let googleMapHTML = `<h3>Ride Map</h3>
-//   <div id="map"></div>
-//   <script>
-//     function initMap() {
-      
-//       let map = new google.maps.Map(document.getElementById('map'), {
-//         zoom: 11,
-//         center: ${currentLocation}
-//       });
-//       let marker = new google.maps.Marker({
-//         position: ${currentLocation},
-//         map: map
-//       });
-//     }
-//   </script>
-//   <script async defer
-//   src="https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap">
-//   </script>`;
-//   return googleMapHTML;
-// }
-
-/*  old marker maker
-// Create an array of alphabetical characters used to label the markers.
-        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        
-        // Add some markers to the map.
-        // Note: The code uses the JavaScript Array.prototype.map() method to
-        // create an array of markers based on a given "locations" array.
-        // The map() method here has nothing to do with the Google Maps API.
-        var markers = locations.map(function(location, i) {
-          return new google.maps.Marker({
-            position: location,
-            label: labels[i % labels.length]
-*/
