@@ -42,20 +42,18 @@ function generateLocationInput() {
   
   <form>
     <select class = "userDropDowns" id = "userSearchRadius" name = "searchRadius">
-      <option value="10" selected>Distance</option> 
       <option value="5">5 Miles</option> 
       <option value="10">10 Miles</option>
-      <option value="25">25 Miles</option>
+      <option value="25" selected>25 Miles</option>
       <option value="50">50 Miles</option>
     </select>
   </form>
   
-  </h4>With a minimum length of:</h4>
+  </h4>And with a minimum length of:</h4>
 
   <form>
     <select class = "userDropDowns" id = "userTrailLength" name = "trailLength">
-      <option value="5" selected>Trail Length</option> 
-      <option value="5">5+ Miles</option> 
+      <option value="5" selected>5+ Miles</option> 
       <option value="10">10+ Miles</option>
       <option value="25">25+ Miles</option>
       <option value="50">50+ Miles</option>
@@ -160,18 +158,6 @@ function getNormalGeoCoding(searchTerm, maxDistance) {
       console.log(searchTerm);
     }
   };
-  if (maxDistance === '5') {
-    STATE.zoomLevel = 11;
-  }
-  else if (maxDistance === '10') {
-    STATE.zoomLevel = 10;    
-  }
-  else if (maxDistance === '25') {
-    STATE.zoomLevel = 9;
-  }
-  else if (maxDistance === '50') {
-    STATE.zoomLevel = 8;
-  }
   $.ajax(settings);
 }
 //=================================================================================
@@ -214,7 +200,7 @@ function getWUnderground() {
       // jsonp: 'callback',  //What does this do?
       // dataType : 'jsonp',
       success : function(weatherData) {
-        STATE.JSONWUnderground[i] = weatherData;
+        STATE.JSONWUnderground.push(weatherData);
       }
     };
     $.ajax(conditions);
@@ -234,19 +220,19 @@ function handleUserInputs(){
     STATE.userInput = $('input[type=text][name=searchTerms]').val();
     STATE.maxDistance = $('select#userSearchRadius').val();
     STATE.minTrailLength = $('select#userTrailLength').val();
-    // if ($('select#userSearchRadius').val() === 5) {
-    //   STATE.zoomLevel = 10;
-    // }
-    // else if ($('select#userSearchRadius').val() === 10) {
-    //   STATE.zoomLevel = 9;    
-    // }
-    // else if ($('select#userSearchRadius').val() === 25) {
-    //   STATE.zoomLevel = 8;
-    // }
-    // else if ($('select#userSearchRadius').val() === 50) {
-    //   STATE.zoomLevel = 7;
-    // }
-    getNormalGeoCoding(`${STATE.userInput}`,`${STATE.maxDistance}`);
+    if ($('select#userSearchRadius').val() === '5') {
+      STATE.zoomLevel = 10;
+    }
+    if ($('select#userSearchRadius').val() === '10') {
+      STATE.zoomLevel = 9;    
+    }
+    if ($('select#userSearchRadius').val() === '25') {
+      STATE.zoomLevel = 8;
+    }
+    if ($('select#userSearchRadius').val() === '50') {
+      STATE.zoomLevel = 7;
+    }
+    getNormalGeoCoding(STATE.userInput, STATE.maxDistance);
   });
 }
 /////Document Ready Function//////

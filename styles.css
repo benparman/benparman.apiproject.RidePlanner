@@ -1,9 +1,9 @@
 body {
-  background: rgba(0, 0, 0, 0.2);
+  background: rgb(165, 165, 165);
 }
 
 .titleText {
-  margin: 25px;
+  margin: 5px;
   text-align: center;
 }
 
@@ -30,20 +30,29 @@ body {
   padding-left: 33%;
 } */
 form {
-  margin: 30px 0 60px 0;
+  margin: 5px;
+}
+h1 {
+  margin: 5px;
+}
+h3 {
+  margin: 5px;
+}
+h4 {
+  margin: 5px;
 }
 select {
   width: 150px;
   font: normal 11px verdana;
-  color: rgb(220, 220, 220);
-  background: rgb(0, 0, 0);
+  color: rgb(0, 0, 0);
+  background: rgb(231, 231, 231);
 }      
 #js-google_map {
-  height: 400px;
-  width: 50%;
+  height: 85%;
+  width: 95%;
   margin: auto;
-  border: solid black 5px;
-  border-radius: 5px;
+  /* border: solid black 5px;
+  border-radius: 5px; */
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
