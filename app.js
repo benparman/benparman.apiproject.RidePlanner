@@ -25,23 +25,53 @@ const STATE = {
   userLon: 0,
   maxDistance: 0,
   maxResults: 0,
+  minTrailLength: 0,
   userSortMethod: null,
   wUndergroundSearchType: 'conditions',
   ///////Returned API JSON Data//
   JSONgeoCoding: {},  //refactor these
-  JSONmtbProject: null,
-  JSONWUnderground: {},
+  JSONmtbProject: null,  // ----------------- When defined here as 'null', this is assignable
+  JSONWUnderground: [],  // ----------------- As 'null', this is not assignable.  Only works as {} or [] - why?
   markerCoords: [],
+  zoomLevel: 5
 };
 //=================================================================================
 /////////HTML Generators//////////
 function generateLocationInput() {
-  let locationInput = `<form>
+  let locationInput = `
+  
+  <form>
+    <select class = "userDropDowns" id = "userSearchRadius" name = "searchRadius">
+      <option value="10" selected>Distance</option> 
+      <option value="5">5 Miles</option> 
+      <option value="10">10 Miles</option>
+      <option value="25">25 Miles</option>
+      <option value="50">50 Miles</option>
+    </select>
+  </form>
+  
+  </h4>With a minimum length of:</h4>
+
+  <form>
+    <select class = "userDropDowns" id = "userTrailLength" name = "trailLength">
+      <option value="5" selected>Trail Length</option> 
+      <option value="5">5+ Miles</option> 
+      <option value="10">10+ Miles</option>
+      <option value="25">25+ Miles</option>
+      <option value="50">50+ Miles</option>
+    </select>
+  </form>
+
+  <h4>From:</h4>
+
+  <form>
   <input name="searchTerms" aria-label="search-here" type="text" 
   class="searchTerms" placeholder="Where are you riding?" required="">
-  <button aria-label="submit-button" id="js-location-submit-button" 
-  type="submit">Go!</button>
-  </form>`;
+  <button aria-label="submit-button" id="js-location-submit-button" type="submit">
+    Go!
+  </button>
+</form>
+  `;
   // console.log(locationInput);
   return `${locationInput}`;
 }
@@ -61,13 +91,15 @@ function addMarkers(location, map){
 function initMap(currentLocation, markerLocations) {
   var mapOptions = {
     mapTypeId: 'terrain',
-    zoom: 8,
+    zoom: STATE.zoomLevel,
     center: currentLocation
   };
   var map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
   addMarkers(markerLocations, map);
 }
 function generateGoogleMap() {
+  let trailTemp = STATE.JSONWUnderground;
+  console.log(trailTemp);
   let currentLocation = {lat: STATE.lat, lng: STATE.lon};
   let markerLocations = STATE.JSONmtbProject.trails.map(function(trail){
     return {
@@ -79,12 +111,13 @@ function generateGoogleMap() {
       tooltip: 
         `
         <h2>${trail.name} - ${trail.location}</h2>
-        <h4>${trail.summary}</h4>
+        <h4>Description: ${trail.summary}</h4>
         <p>Difficuly: ${trail.difficulty}</p>
         <p>Length: ${trail.length}</p>
         <p>User Rating: ${trail.stars}</p>
         <img src="${trail.imgSmall}" alt="Trail Photo" height="100" width="100"><br>
         <a href="${trail.url}" target = "_blank">MTB Project</a>
+        <p>Current Temperature: ${trailTemp}</p>
         `
     };
   });
@@ -103,7 +136,7 @@ function renderGoogleMap() {
 }
 //=================================================================================
 ///////Geocoding AJAX Call////////
-function getNormalGeoCoding(searchTerm) {
+function getNormalGeoCoding(searchTerm, maxDistance) {
   const settings = {
     url: geoCodingEndpoint,
     data: {
@@ -123,8 +156,22 @@ function getNormalGeoCoding(searchTerm) {
       console.log('GeoCoding Response');
       console.log(data);
       getMTBproject();
+      console.log(maxDistance);
+      console.log(searchTerm);
     }
   };
+  if (maxDistance === '5') {
+    STATE.zoomLevel = 11;
+  }
+  else if (maxDistance === '10') {
+    STATE.zoomLevel = 10;    
+  }
+  else if (maxDistance === '25') {
+    STATE.zoomLevel = 9;
+  }
+  else if (maxDistance === '50') {
+    STATE.zoomLevel = 8;
+  }
   $.ajax(settings);
 }
 //=================================================================================
@@ -135,11 +182,11 @@ function getMTBproject() {
     data: {
       lat: STATE.lat,
       lon: STATE.lon,
-      maxDistance: 50, //replace with user input
-      maxResults: 25, //do same as above
-      sort: 'distance', //same....
-      minLength: 25, //same...
-      minStars: 4, //same...
+      maxDistance: STATE.maxDistance, 
+      maxResults: 25, //replace with user input?
+      sort: 'distance', //replace with user input?
+      minLength: STATE.minTrailLength,
+      minStars: 4, //replace with user input?
       key: mtbProjectApiKey
     },
     dataType: 'json',
@@ -164,8 +211,8 @@ function getWUnderground() {
                         `/${searchType[i]}/q/${STATE.latLng}.json`;
     let conditions = {
       url : conditionsURL,
-      jsonp: 'callback',  //What does this do?
-      dataType : 'jsonp',
+      // jsonp: 'callback',  //What does this do?
+      // dataType : 'jsonp',
       success : function(weatherData) {
         STATE.JSONWUnderground[i] = weatherData;
       }
@@ -185,7 +232,21 @@ function handleUserInputs(){
     event.preventDefault();
     //update userAnswer in STORE to the user's answer choice
     STATE.userInput = $('input[type=text][name=searchTerms]').val();
-    getNormalGeoCoding(`${STATE.userInput}`);
+    STATE.maxDistance = $('select#userSearchRadius').val();
+    STATE.minTrailLength = $('select#userTrailLength').val();
+    // if ($('select#userSearchRadius').val() === 5) {
+    //   STATE.zoomLevel = 10;
+    // }
+    // else if ($('select#userSearchRadius').val() === 10) {
+    //   STATE.zoomLevel = 9;    
+    // }
+    // else if ($('select#userSearchRadius').val() === 25) {
+    //   STATE.zoomLevel = 8;
+    // }
+    // else if ($('select#userSearchRadius').val() === 50) {
+    //   STATE.zoomLevel = 7;
+    // }
+    getNormalGeoCoding(`${STATE.userInput}`,`${STATE.maxDistance}`);
   });
 }
 /////Document Ready Function//////
