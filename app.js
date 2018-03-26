@@ -115,14 +115,17 @@ function generateGoogleMap() {
       },
       tooltip: 
         `
-        <h2>${trail.name} - ${trail.location}</h2>
+        <h2><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
         <h4>Description: ${trail.summary}</h4>
         <p>Difficuly: ${trail.difficulty}</p>
         <p>Length: ${trail.length}</p>
         <p>User Rating: ${trail.stars}</p>
-        <img src="${trail.imgSmall}" alt="Trail Photo" height="100" width="100"><br>
-        <a href="${trail.url}" target = "_blank">MTB Project</a>
+        <p><img src="${trail.imgSmall}" alt="Trail Photo" height="200" width="200"></p>
+        <p><img src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50"></p>
+        <p>Current Condition: ${weather.forecast.description}</p>
         <p>Current Temperature: ${weather.currentConditions.temperature}</p>
+        <p>Daily High: ${weather.forecast.tempHigh}</p>
+        <p>Daily Low: ${weather.forecast.tempLow}</p>
         `
     };
   });
@@ -156,13 +159,7 @@ function getNormalGeoCoding(searchTerm, maxDistance) {
       STATE.lon = data.results['0'].geometry.location.lng;
       STATE.latLng = (STATE.lat)+','+(STATE.lon);
       STATE.JSONgeoCoding = data;
-      console.log('APP State');
-      console.log(STATE);
-      console.log('GeoCoding Response');
-      console.log(data);
       getMTBproject();
-      console.log(maxDistance);
-      console.log(searchTerm);
     }
   };
   $.ajax(settings);
@@ -186,8 +183,6 @@ function getMTBproject() {
     type: 'GET',
     success: function(data) {
       STATE.JSONmtbProject = data;
-      console.log('MTBProject Response');
-      console.log(data);
       getWUnderground();
     }
   };
@@ -195,7 +190,6 @@ function getMTBproject() {
 }
 //=================================================================================
 ///////WUnderground AJAX Call////////  WORKING! Update to accept user inputs
-
 function getWUnderground() {
   let searchTypes = ['conditions','forecast'];
   const promises = searchTypes.map(function(searchType) {
@@ -207,38 +201,19 @@ function getWUnderground() {
   Promise.all(promises).then(function(results) {
     console.log(results);
     STATE.JSONWUnderground = {
-      forecast: {
-        temperature: results[1].forecast.simpleforecast.forecastday[0].high.fahrenheit,
-      },
       currentConditions: {
         temperature: results[0].current_observation.temp_f,
+      },
+      forecast: {
+        tempHigh: results[1].forecast.simpleforecast.forecastday[0].high.fahrenheit,
+        tempLow: results[1].forecast.simpleforecast.forecastday[0].low.fahrenheit,
+        description: results[1].forecast.simpleforecast.forecastday[0].conditions,
+        image: results[1].forecast.simpleforecast.forecastday[0].icon_url
       }
     };
     renderGoogleMap();
   });
 }
-
-// function getWUnderground() {
-//   let searchType = [/*'alerts',*/'conditions','forecast'/*,'history','hourly','planner','webcams'*/];
-//   for (let i = 0; i<searchType.length; i++) {
-
-//     //Loop provides multiple API calls based on number of active searchType's above.
-//     let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
-//                         `/${searchType[i]}/q/${STATE.latLng}.json`;
-//     let conditions = {
-//       url : conditionsURL,
-//       // jsonp: 'callback',  //What does this do?
-//       // dataType : 'jsonp',
-//       success : function(weatherData) {
-//         STATE.JSONWUnderground.push(weatherData);
-//       }
-//     };
-//     $.ajax(conditions);
-//   }
-//   console.log('WUnderground Response');
-//   console.log(STATE.JSONWUnderground);
-//   renderGoogleMap();
-// }
 //=================================================================================
 //////////Event Handlers//////////
 function handleUserInputs(){
@@ -267,4 +242,28 @@ function handleUserInputs(){
 }
 /////Document Ready Function//////
 $(document).ready(handleUserInputs);
+
 //=================================================================================
+// Old functions that are no longer being used
+//=================================================================================
+// function getWUnderground() {
+//   let searchType = [/*'alerts',*/'conditions','forecast'/*,'history','hourly','planner','webcams'*/];
+//   for (let i = 0; i<searchType.length; i++) {
+
+//     //Loop provides multiple API calls based on number of active searchType's above.
+//     let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
+//                         `/${searchType[i]}/q/${STATE.latLng}.json`;
+//     let conditions = {
+//       url : conditionsURL,
+//       // jsonp: 'callback',  //What does this do?
+//       // dataType : 'jsonp',
+//       success : function(weatherData) {
+//         STATE.JSONWUnderground.push(weatherData);
+//       }
+//     };
+//     $.ajax(conditions);
+//   }
+//   console.log('WUnderground Response');
+//   console.log(STATE.JSONWUnderground);
+//   renderGoogleMap();
+// }
