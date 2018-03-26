@@ -31,9 +31,10 @@ const STATE = {
   ///////Returned API JSON Data//
   JSONgeoCoding: {},  //refactor these
   JSONmtbProject: null,  // ----------------- When defined here as 'null', this is assignable
-  JSONWUnderground: [],  // ----------------- As 'null', this is not assignable.  Only works as {} or [] - why?
+  JSONWUnderground: {},  // ----------------- As 'null', this is not assignable.  Only works as {} or [] - why?
   markerCoords: [],
-  zoomLevel: 5
+  zoomLevel: 5,
+  currentInfoWindow: null
 };
 //=================================================================================
 /////////HTML Generators//////////
@@ -83,7 +84,14 @@ function addMarkers(location, map){
       title: location.title
     });
     let infowindow = new google.maps.InfoWindow({ content: location.tooltip });
-    marker.addListener('click', function() { infowindow.open(map, marker); });
+    marker.addListener('click', function() { 
+      if (STATE.currentInfoWindow) {
+        STATE.currentInfoWindow.close();
+        console.log(STATE.currentInfoWindow);
+      }
+      infowindow.open(map, marker);
+      STATE.currentInfoWindow = infowindow;
+    });
   });
 }
 function initMap(currentLocation, markerLocations) {
@@ -96,8 +104,7 @@ function initMap(currentLocation, markerLocations) {
   addMarkers(markerLocations, map);
 }
 function generateGoogleMap() {
-  let trailTemp = STATE.JSONWUnderground;
-  console.log(trailTemp);
+  let weather = STATE.JSONWUnderground;
   let currentLocation = {lat: STATE.lat, lng: STATE.lon};
   let markerLocations = STATE.JSONmtbProject.trails.map(function(trail){
     return {
@@ -115,7 +122,7 @@ function generateGoogleMap() {
         <p>User Rating: ${trail.stars}</p>
         <img src="${trail.imgSmall}" alt="Trail Photo" height="100" width="100"><br>
         <a href="${trail.url}" target = "_blank">MTB Project</a>
-        <p>Current Temperature: ${trailTemp}</p>
+        <p>Current Temperature: ${weather.currentConditions.temperature}</p>
         `
     };
   });
@@ -188,27 +195,50 @@ function getMTBproject() {
 }
 //=================================================================================
 ///////WUnderground AJAX Call////////  WORKING! Update to accept user inputs
-function getWUnderground() {
-  let searchType = [/*'alerts',*/'conditions','forecast'/*,'history','hourly','planner','webcams'*/];
-  for (let i = 0; i<searchType.length; i++) {
 
-    //Loop provides multiple API calls based on number of active searchType's above.
-    let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
-                        `/${searchType[i]}/q/${STATE.latLng}.json`;
-    let conditions = {
-      url : conditionsURL,
-      // jsonp: 'callback',  //What does this do?
-      // dataType : 'jsonp',
-      success : function(weatherData) {
-        STATE.JSONWUnderground.push(weatherData);
+function getWUnderground() {
+  let searchTypes = ['conditions','forecast'];
+  const promises = searchTypes.map(function(searchType) {
+    return $.ajax({
+      url : `${wUndergroundEndpoint}/${wUndergroundApiKey}/${searchType}/q/${STATE.latLng}.json`,
+    });
+  });
+
+  Promise.all(promises).then(function(results) {
+    console.log(results);
+    STATE.JSONWUnderground = {
+      forecast: {
+        temperature: results[1].forecast.simpleforecast.forecastday[0].high.fahrenheit,
+      },
+      currentConditions: {
+        temperature: results[0].current_observation.temp_f,
       }
     };
-    $.ajax(conditions);
-  }
-  console.log('WUnderground Response');
-  console.log(STATE.JSONWUnderground);
-  renderGoogleMap();
+    renderGoogleMap();
+  });
 }
+
+// function getWUnderground() {
+//   let searchType = [/*'alerts',*/'conditions','forecast'/*,'history','hourly','planner','webcams'*/];
+//   for (let i = 0; i<searchType.length; i++) {
+
+//     //Loop provides multiple API calls based on number of active searchType's above.
+//     let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
+//                         `/${searchType[i]}/q/${STATE.latLng}.json`;
+//     let conditions = {
+//       url : conditionsURL,
+//       // jsonp: 'callback',  //What does this do?
+//       // dataType : 'jsonp',
+//       success : function(weatherData) {
+//         STATE.JSONWUnderground.push(weatherData);
+//       }
+//     };
+//     $.ajax(conditions);
+//   }
+//   console.log('WUnderground Response');
+//   console.log(STATE.JSONWUnderground);
+//   renderGoogleMap();
+// }
 //=================================================================================
 //////////Event Handlers//////////
 function handleUserInputs(){
