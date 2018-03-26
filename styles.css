@@ -41,6 +41,9 @@ h3 {
 h4 {
   margin: 5px;
 }
+p {
+  margin: 0;
+}
 select {
   width: 150px;
   font: normal 11px verdana;
@@ -48,7 +51,7 @@ select {
   background: rgb(231, 231, 231);
 }      
 #js-google_map {
-  height: 85%;
+  height: 75%;
   width: 95%;
   margin: auto;
   /* border: solid black 5px;

@@ -244,7 +244,7 @@ function getWUnderground() {
 function handleUserInputs(){
   renderSearchForm();
   //Listens for user to submit location
-  $('.js-searchBox').on('click', '#js-location-submit-button', event => {
+  $('.js-searchBox').submit(event => {
     event.preventDefault();
     //update userAnswer in STORE to the user's answer choice
     STATE.userInput = $('input[type=text][name=searchTerms]').val();
