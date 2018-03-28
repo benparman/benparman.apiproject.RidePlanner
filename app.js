@@ -40,7 +40,8 @@ const STATE = {
 /////////HTML Generators//////////
 function generateLocationInput() {
   let locationInput = `
-  
+  <h1>Ride Finder</h1>
+  <h3>Show me trails within:</h3>
   <form>
     <select class = "userDropDowns" id = "userSearchRadius" name = "searchRadius">
       <option value="5">5 Miles</option> 
@@ -136,11 +137,7 @@ function generateGoogleMap() {
 //////////HTML Renderers//////////
 function renderSearchForm() {
   let searchForm = generateLocationInput();
-  $('.js-searchBox').html(searchForm);
-}
-function renderGoogleMap() {
-  generateGoogleMap();
-  // $('#js-google_map').html(googleMapRendered);
+  $('.js-searchBox').append(searchForm); //changed from .html to .append
 }
 //=================================================================================
 ///////Geocoding AJAX Call////////
@@ -197,7 +194,6 @@ function getWUnderground() {
       url : `${wUndergroundEndpoint}/${wUndergroundApiKey}/${searchType}/q/${STATE.latLng}.json`,
     });
   });
-
   Promise.all(promises).then(function(results) {
     console.log(results);
     STATE.JSONWUnderground = {
@@ -211,7 +207,7 @@ function getWUnderground() {
         image: results[1].forecast.simpleforecast.forecastday[0].icon_url
       }
     };
-    renderGoogleMap();
+    generateGoogleMap();
   });
 }
 //=================================================================================
@@ -235,7 +231,7 @@ function handleUserInputs(){
       STATE.zoomLevel = 8;
     }
     if ($('select#userSearchRadius').val() === '50') {
-      STATE.zoomLevel = 7;
+      STATE.zoomLevel = 8;
     }
     getNormalGeoCoding(STATE.userInput, STATE.maxDistance);
   });
