@@ -82,7 +82,7 @@ function generateLocationInput() {
 /////////Google Maps Generator//////////
 function addMarkers(location, map){
   location.forEach(function(location) {
-    var marker = new google.maps.Marker({
+    let marker = new google.maps.Marker({
       position: location.coords,
       map: map,
       title: location.title
@@ -99,12 +99,12 @@ function addMarkers(location, map){
   });
 }
 function initMap(currentLocation, markerLocations) {
-  var mapOptions = {
+  let mapOptions = {
     mapTypeId: 'terrain',
     zoom: STATE.zoomLevel,
     center: currentLocation
   };
-  var map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
+  let map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
   addMarkers(markerLocations, map);
 }
 function generateGoogleMap() {
@@ -119,18 +119,17 @@ function generateGoogleMap() {
       },
       tooltip: 
         `
-        <h2 class = "iw"><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
+        <h2 class = "infoWindow"><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
         <img class = "icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
-        <h4 class = "iw">Description: ${trail.summary}</h4>
-        <p class = "iw">Difficuly: ${trail.difficulty}</p>
-        <p class = "iw">Length: ${trail.length}</p>
-        <p class = "iw">User Rating: ${trail.stars}</p>
+        <h4 class = "infoWindow">Description: ${trail.summary}</h4>
+        <p class = "infoWindow">Difficuly: ${trail.difficulty}</p>
+        <p class = "infoWindow">Length: ${trail.length}</p>
+        <p class = "infoWindow">User Rating: ${trail.stars}</p>
         <img class = "thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
-        <p class = "iw">Current Condition: ${weather.forecast.description}</p>
-        <p class = "iw">Current Temperature: ${weather.currentConditions.temperature}</p>
-        <p class = "iw">Daily High: ${weather.forecast.tempHigh}</p>
-        <p class = "iw">Daily Low: ${weather.forecast.tempLow}</p>
-        
+        <p class = "infoWindow">Current Condition: ${weather.forecast.description}</p>
+        <p class = "infoWindow">Current Temperature: ${weather.currentConditions.temperature}</p>
+        <p class = "infoWindow">Daily High: ${weather.forecast.tempHigh}</p>
+        <p class = "infoWindow">Daily Low: ${weather.forecast.tempLow}</p>
         `
     };
   });
@@ -153,7 +152,6 @@ function getNormalGeoCoding(searchTerm, maxDistance) {
       key: geoCodingApiKey
     },
     dataType: 'json',
-    type: 'GET',
     success: function(data) {
       STATE.address = data.results['0'].formatted_address;
       STATE.lat = data.results['0'].geometry.location.lat;
@@ -181,7 +179,6 @@ function getMTBproject() {
       key: mtbProjectApiKey
     },
     dataType: 'json',
-    type: 'GET',
     success: function(data) {
       STATE.JSONmtbProject = data;
       getWUnderground();
@@ -242,28 +239,3 @@ function handleUserInputs(){
 }
 /////Document Ready Function//////
 $(document).ready(handleUserInputs);
-
-//=================================================================================
-// Old functions that are no longer being used
-//=================================================================================
-// function getWUnderground() {
-//   let searchType = [/*'alerts',*/'conditions','forecast'/*,'history','hourly','planner','webcams'*/];
-//   for (let i = 0; i<searchType.length; i++) {
-
-//     //Loop provides multiple API calls based on number of active searchType's above.
-//     let conditionsURL = `${wUndergroundEndpoint}/${wUndergroundApiKey}`+
-//                         `/${searchType[i]}/q/${STATE.latLng}.json`;
-//     let conditions = {
-//       url : conditionsURL,
-//       // jsonp: 'callback',  //What does this do?
-//       // dataType : 'jsonp',
-//       success : function(weatherData) {
-//         STATE.JSONWUnderground.push(weatherData);
-//       }
-//     };
-//     $.ajax(conditions);
-//   }
-//   console.log('WUnderground Response');
-//   console.log(STATE.JSONWUnderground);
-//   renderGoogleMap();
-// }
