@@ -40,6 +40,7 @@ const STATE = {
 /////////HTML Generators//////////
 function generateLocationInput() {
   let locationInput = `
+
   <div class = "js-text">
     <h1>Ride Finder</h1>
     <h3>Show me trails within:</h3>
@@ -215,7 +216,7 @@ function getWUnderground() {
 //=================================================================================
 //////////Event Handlers//////////
 function handleUserInputs(){
-  renderSearchForm();
+  // renderSearchForm();
   //Listens for user to submit location
   $('.js-searchBox').submit(event => {
     event.preventDefault();
