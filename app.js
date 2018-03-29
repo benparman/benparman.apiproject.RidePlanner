@@ -40,37 +40,39 @@ const STATE = {
 /////////HTML Generators//////////
 function generateLocationInput() {
   let locationInput = `
-  <h1>Ride Finder</h1>
-  <h3>Show me trails within:</h3>
-  <form>
-    <select class = "userDropDowns" id = "userSearchRadius" name = "searchRadius">
-      <option value="5">5 Miles</option> 
-      <option value="10">10 Miles</option>
-      <option value="25" selected>25 Miles</option>
-      <option value="50">50 Miles</option>
-    </select>
-  </form>
-  
-  </h4>And with a minimum length of:</h4>
+  <div class = "js-text">
+    <h1>Ride Finder</h1>
+    <h3>Show me trails within:</h3>
+    <form>
+      <select class = "userDropDowns js-text" id = "userSearchRadius" name = "searchRadius">
+        <option value="5">5 Miles</option> 
+        <option value="10">10 Miles</option>
+        <option value="25" selected>25 Miles</option>
+        <option value="50">50 Miles</option>
+      </select>
+    </form>
+    
+    </h4>And with a minimum length of:</h4>
 
-  <form>
-    <select class = "userDropDowns" id = "userTrailLength" name = "trailLength">
-      <option value="5" selected>5+ Miles</option> 
-      <option value="10">10+ Miles</option>
-      <option value="25">25+ Miles</option>
-      <option value="50">50+ Miles</option>
-    </select>
-  </form>
+    <form>
+      <select class = "userDropDowns js-text" id = "userTrailLength" name = "trailLength">
+        <option value="5" selected>5+ Miles</option> 
+        <option value="10">10+ Miles</option>
+        <option value="25">25+ Miles</option>
+        <option value="50">50+ Miles</option>
+      </select>
+    </form>
 
-  <h4>From:</h4>
+    <h4>From:</h4>
 
-  <form>
-  <input name="searchTerms" aria-label="search-here" type="text" 
-  class="searchTerms" placeholder="Where are you riding?" required="">
-  <button aria-label="submit-button" id="js-location-submit-button" type="submit">
-    Go!
-  </button>
-</form>
+    <form>
+    <input name="searchTerms" aria-label="search-here" type="text" 
+    class="searchTerms" placeholder="Where are you riding?" required="">
+    <button aria-label="submit-button" id="js-location-submit-button" type="submit">
+      Go!
+    </button>
+    </form>
+  </div>
   `;
   // console.log(locationInput);
   return `${locationInput}`;

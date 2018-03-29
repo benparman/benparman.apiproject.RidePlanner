@@ -1,13 +1,14 @@
 body {
-  background: rgb(165, 165, 165);
+  background: rgb(236, 255, 250);
 }
 
 .main {
-  background: rgb(218, 54, 54);
+  background: rgb(95, 148, 190);
   margin: auto;
   height: 800px;
   width: 800px;
-  z-index: -1;
+  border: 5px solid black;
+  border-radius: 8px;
 };
 
 .titleText {
@@ -34,22 +35,7 @@ body {
   border-style: outset inset inset outset;
   border-radius: 5px;
 }
-/* .js-searchbox {
-  padding-left: 33%;
-} */
-form {
-  margin: 5px;
-}
-h1 {
-  margin: 5px;
-}
-h3 {
-  margin: 5px;
-}
-h4 {
-  margin: 0px;
-}
-p {
+.js-text h4, h1, h3 {
   margin: 0;
 }
 select {
@@ -59,8 +45,8 @@ select {
   background: rgb(231, 231, 231);
 }      
 #js-google_map {
-  height: 70%;
-  width: 75%;
+  height: 73%;
+  width: 95%;
   margin: auto;
   border: solid rgba(0, 0, 0, 0) 5px;
   border-radius: 10px;
