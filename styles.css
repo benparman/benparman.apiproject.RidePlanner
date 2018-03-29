@@ -5,6 +5,18 @@ body {
   background: rgb(0, 0, 0); */
 }
 
+.iw {
+  margin: 0;
+  max-width: 350px;
+  max-height: 250px;
+}
+.icon {
+  float: right;
+}
+.thumbnail {
+  float: right;
+}
+
 .main {
     background-image: url(images/mtn.jpg);
   background-repeat: no-repeat;

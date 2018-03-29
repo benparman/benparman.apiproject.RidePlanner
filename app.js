@@ -119,17 +119,18 @@ function generateGoogleMap() {
       },
       tooltip: 
         `
-        <h2><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
-        <h4>Description: ${trail.summary}</h4>
-        <p>Difficuly: ${trail.difficulty}</p>
-        <p>Length: ${trail.length}</p>
-        <p>User Rating: ${trail.stars}</p>
-        <p><img src="${trail.imgSmall}" alt="Trail Photo" height="200" width="200"></p>
-        <p><img src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50"></p>
-        <p>Current Condition: ${weather.forecast.description}</p>
-        <p>Current Temperature: ${weather.currentConditions.temperature}</p>
-        <p>Daily High: ${weather.forecast.tempHigh}</p>
-        <p>Daily Low: ${weather.forecast.tempLow}</p>
+        <h2 class = "iw"><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
+        <img class = "icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
+        <h4 class = "iw">Description: ${trail.summary}</h4>
+        <p class = "iw">Difficuly: ${trail.difficulty}</p>
+        <p class = "iw">Length: ${trail.length}</p>
+        <p class = "iw">User Rating: ${trail.stars}</p>
+        <img class = "thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
+        <p class = "iw">Current Condition: ${weather.forecast.description}</p>
+        <p class = "iw">Current Temperature: ${weather.currentConditions.temperature}</p>
+        <p class = "iw">Daily High: ${weather.forecast.tempHigh}</p>
+        <p class = "iw">Daily Low: ${weather.forecast.tempLow}</p>
+        
         `
     };
   });
