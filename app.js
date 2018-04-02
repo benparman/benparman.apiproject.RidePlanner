@@ -1,151 +1,35 @@
 'use strict';
-//===========
-/////////////Endpoints//////////// -- Refactor these global variables (at some point)*****************
-const geoCodingEndpoint = 'https://maps.googleapis.com/maps/api/geocode/json';
-const mtbProjectEndpoint = 'https://www.mtbproject.com/data/get-trails';
-const wUndergroundEndpoint = 'http://api.wunderground.com/api';
-const googleMapstEndpoint = 'https://maps.googleapis.com/maps/api/js';
-//=================================================================================
-//////////////API Keys////////////
-const geoCodingApiKey = 'AIzaSyB05Gh-VXpXhypmBg4R3hzZl8zFxJJYLGQ';
-const mtbProjectApiKey = '7039473-9cbb333b7351c6704d04a854df751159';
-const wUndergroundApiKey = '9f701de35b137c15';
-const googleMapsApiKey = 'AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU';
-//=================================================================================
-/////////////APP STATE////////////
-const STATE = {
-  userInput: null,
+//================Endpoints================
+const geoCodingEndpoint='https://maps.googleapis.com/maps/api/geocode/json';
+const mtbProjectEndpoint='https://www.mtbproject.com/data/get-trails';
+const wUndergroundEndpoint='http://api.wunderground.com/api';
+//================API Keys================
+const geoCodingApiKey='AIzaSyB05Gh-VXpXhypmBg4R3hzZl8zFxJJYLGQ';
+const mtbProjectApiKey='7039473-9cbb333b7351c6704d04a854df751159';
+const wUndergroundApiKey='9f701de35b137c15';
+//================APP STATE================
+const STATE={
   address: null,
-  latLng: 0,
-  latLngFixed: 0,
+  currentInfoWindow: null,
   lat: 0, 
   lon: 0,
-  userLatLng: 0,
-  userLat: 0,
-  userLon: 0,
+  latLng: 0,
   maxDistance: 0,
   maxResults: 0,
   minTrailLength: 0,
+  userInput: null,
+  userLatLng: 0,
+  userLat: 0,
+  userLon: 0,
   userSortMethod: null,
-  wUndergroundSearchType: 'conditions',
-  ///////Returned API JSON Data//
-  JSONgeoCoding: {},  //refactor these
-  JSONmtbProject: null,  // ----------------- When defined here as 'null', this is assignable
-  JSONWUnderground: {},  // ----------------- As 'null', this is not assignable.  Only works as {} or [] - why?
-  markerCoords: [],
   zoomLevel: 5,
-  currentInfoWindow: null
+  JSONgeoCoding: {},
+  JSONmtbProject: null,
+  jsonWeatherUnderground: {}
 };
-//=================================================================================
-/////////HTML Generators//////////
-function generateLocationInput() {
-  let locationInput = `
-
-  <div class = "js-text">
-    <h1>Ride Finder</h1>
-    <h3>Show me trails within:</h3>
-    <form>
-      <select class = "userDropDowns js-text" id = "userSearchRadius" name = "searchRadius">
-        <option value="5">5 Miles</option> 
-        <option value="10">10 Miles</option>
-        <option value="25" selected>25 Miles</option>
-        <option value="50">50 Miles</option>
-      </select>
-    </form>
-    
-    </h4>And with a minimum length of:</h4>
-
-    <form>
-      <select class = "userDropDowns js-text" id = "userTrailLength" name = "trailLength">
-        <option value="5" selected>5+ Miles</option> 
-        <option value="10">10+ Miles</option>
-        <option value="25">25+ Miles</option>
-        <option value="50">50+ Miles</option>
-      </select>
-    </form>
-
-    <h4>From:</h4>
-
-    <form>
-    <input name="searchTerms" aria-label="search-here" type="text" 
-    class="searchTerms" placeholder="Where are you riding?" required="">
-    <button aria-label="submit-button" id="js-location-submit-button" type="submit">
-      Go!
-    </button>
-    </form>
-  </div>
-  `;
-  // console.log(locationInput);
-  return `${locationInput}`;
-}
-//=================================================================================
-/////////Google Maps Generator//////////
-function addMarkers(location, map){
-  location.forEach(function(location) {
-    let marker = new google.maps.Marker({
-      position: location.coords,
-      map: map,
-      title: location.title
-    });
-    let infowindow = new google.maps.InfoWindow({ content: location.tooltip });
-    marker.addListener('click', function() { 
-      if (STATE.currentInfoWindow) {
-        STATE.currentInfoWindow.close();
-        console.log(STATE.currentInfoWindow);
-      }
-      infowindow.open(map, marker);
-      STATE.currentInfoWindow = infowindow;
-    });
-  });
-}
-function initMap(currentLocation, markerLocations) {
-  let mapOptions = {
-    mapTypeId: 'terrain',
-    zoom: STATE.zoomLevel,
-    center: currentLocation
-  };
-  let map = new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
-  addMarkers(markerLocations, map);
-}
-function generateGoogleMap() {
-  let weather = STATE.JSONWUnderground;
-  let currentLocation = {lat: STATE.lat, lng: STATE.lon};
-  let markerLocations = STATE.JSONmtbProject.trails.map(function(trail){
-    return {
-      title: trail.name,
-      coords: {
-        lat: trail.latitude,
-        lng: trail.longitude
-      },
-      tooltip: 
-        `
-        <h2 class = "infoWindow"><a href="${trail.url}" target = "_blank">${trail.name} - ${trail.location}</a></h2>
-        <img class = "icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
-        <h4 class = "infoWindow">Description: ${trail.summary}</h4>
-        <p class = "infoWindow">Difficuly: ${trail.difficulty}</p>
-        <p class = "infoWindow">Length: ${trail.length}</p>
-        <p class = "infoWindow">User Rating: ${trail.stars}</p>
-        <img class = "thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
-        <p class = "infoWindow">Current Condition: ${weather.forecast.description}</p>
-        <p class = "infoWindow">Current Temperature: ${weather.currentConditions.temperature}</p>
-        <p class = "infoWindow">Daily High: ${weather.forecast.tempHigh}</p>
-        <p class = "infoWindow">Daily Low: ${weather.forecast.tempLow}</p>
-        `
-    };
-  });
-  initMap(currentLocation, markerLocations);
-  //console.log(markerLocations); //remove this later
-}
-//=================================================================================
-//////////HTML Renderers//////////
-function renderSearchForm() {
-  let searchForm = generateLocationInput();
-  $('.js-searchBox').append(searchForm); //changed from .html to .append
-}
-//=================================================================================
-///////Geocoding AJAX Call////////
-function getNormalGeoCoding(searchTerm, maxDistance) {
-  const settings = {
+//================GeoCoding API Call================
+function getGeoCoding(searchTerm) {
+  const settings={
     url: geoCodingEndpoint,
     data: {
       address: searchTerm,  // ----- refactor by putting ie. url/apiKey directly into functions
@@ -153,20 +37,19 @@ function getNormalGeoCoding(searchTerm, maxDistance) {
     },
     dataType: 'json',
     success: function(data) {
-      STATE.address = data.results['0'].formatted_address;
-      STATE.lat = data.results['0'].geometry.location.lat;
-      STATE.lon = data.results['0'].geometry.location.lng;
-      STATE.latLng = (STATE.lat)+','+(STATE.lon);
-      STATE.JSONgeoCoding = data;
+      STATE.address=data.results['0'].formatted_address;
+      STATE.lat=data.results['0'].geometry.location.lat;
+      STATE.lon=data.results['0'].geometry.location.lng;
+      STATE.latLng=(STATE.lat)+','+(STATE.lon);
+      STATE.JSONgeoCoding=data;
       getMTBproject();
     }
   };
   $.ajax(settings);
 }
-//=================================================================================
-///////MTBProject AJAX Call////////  WORKING!  Update to accept user inputs
+//================MTB Project API Call================
 function getMTBproject() {
-  const settings = {
+  const settings={
     url: mtbProjectEndpoint,
     data: {
       lat: STATE.lat,
@@ -180,24 +63,22 @@ function getMTBproject() {
     },
     dataType: 'json',
     success: function(data) {
-      STATE.JSONmtbProject = data;
-      getWUnderground();
+      STATE.JSONmtbProject=data;
+      getWeatherUnderground();
     }
   };
   $.ajax(settings);
 }
-//=================================================================================
-///////WUnderground AJAX Call////////  WORKING! Update to accept user inputs
-function getWUnderground() {
-  let searchTypes = ['conditions','forecast'];
-  const promises = searchTypes.map(function(searchType) {
+//================Weather Underground API Call================
+function getWeatherUnderground() {
+  const searchTypes=['conditions','forecast'];
+  const promises=searchTypes.map(function(searchType) {
     return $.ajax({
       url : `${wUndergroundEndpoint}/${wUndergroundApiKey}/${searchType}/q/${STATE.latLng}.json`,
     });
   });
   Promise.all(promises).then(function(results) {
-    console.log(results);
-    STATE.JSONWUnderground = {
+    STATE.jsonWeatherUnderground={
       currentConditions: {
         temperature: results[0].current_observation.temp_f,
       },
@@ -211,31 +92,86 @@ function getWUnderground() {
     generateGoogleMap();
   });
 }
-//=================================================================================
-//////////Event Handlers//////////
+//================Google Map Generator================
+function initMap(currentLocation, markerLocations) {
+  const mapOptions={
+    mapTypeId: 'terrain',
+    zoom: STATE.zoomLevel,
+    center: currentLocation
+  };
+  const map=new google.maps.Map(document.getElementById('js-google_map'), mapOptions);
+  addMarkers(markerLocations, map);
+  $('#js-google_map').show();
+}
+//================Map Marker Generator================
+function addMarkers(location, map){
+  location.forEach(function(location) {
+    const marker=new google.maps.Marker({
+      position: location.coords,
+      map: map,
+      title: location.title
+    });
+    const infowindow=new google.maps.InfoWindow({ content: location.tooltip });
+    marker.addListener('click', function() { 
+      if (STATE.currentInfoWindow) {
+        STATE.currentInfoWindow.close();
+      }
+      infowindow.open(map, marker);
+      STATE.currentInfoWindow=infowindow;
+    });
+  });
+}
+//================InfoWindow Generator================
+function generateGoogleMap() {
+  const weather=STATE.jsonWeatherUnderground;
+  const currentLocation={lat: STATE.lat, lng: STATE.lon};
+  const markerLocations=STATE.JSONmtbProject.trails.map(function(trail){
+    return {
+      title: trail.name,
+      coords: {
+        lat: trail.latitude,
+        lng: trail.longitude
+      },
+      tooltip:
+        `<div class="windowWrapper">
+          <h2 class="infoWindow"><a href="${trail.url}" target="_blank">${trail.name} - ${trail.location}</a></h2>
+          <img class="icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
+          <h4 class="infoWindow">Description: ${trail.summary}</h4>
+          <p class="infoWindow">Difficuly: ${trail.difficulty}</p>
+          <p class="infoWindow">Length: ${trail.length}</p>
+          <p class="infoWindow">User Rating: ${trail.stars}</p>
+          <img class="thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
+          <p class="infoWindow">Current Condition: ${weather.forecast.description}</p>
+          <p class="infoWindow">Current Temperature: ${weather.currentConditions.temperature}</p>
+          <p class="infoWindow">Daily High: ${weather.forecast.tempHigh}</p>
+          <p class="infoWindow">Daily Low: ${weather.forecast.tempLow}</p>
+        </div>`
+    };
+  });
+  initMap(currentLocation, markerLocations);
+}
+//================Event Handler================
 function handleUserInputs(){
-  // renderSearchForm();
-  //Listens for user to submit location
   $('.js-searchBox').submit(event => {
     event.preventDefault();
     //update userAnswer in STORE to the user's answer choice
-    STATE.userInput = $('input[type=text][name=searchTerms]').val();
-    STATE.maxDistance = $('select#userSearchRadius').val();
-    STATE.minTrailLength = $('select#userTrailLength').val();
+    STATE.userInput=$('input[type=text][name=searchTerms]').val();
+    STATE.maxDistance=$('select#userSearchRadius').val();
+    STATE.minTrailLength=$('select#userTrailLength').val();
     if ($('select#userSearchRadius').val() === '5') {
-      STATE.zoomLevel = 10;
+      STATE.zoomLevel=10;
     }
     if ($('select#userSearchRadius').val() === '10') {
-      STATE.zoomLevel = 9;    
+      STATE.zoomLevel=9;    
     }
     if ($('select#userSearchRadius').val() === '25') {
-      STATE.zoomLevel = 8;
+      STATE.zoomLevel=8;
     }
     if ($('select#userSearchRadius').val() === '50') {
-      STATE.zoomLevel = 8;
+      STATE.zoomLevel=8;
     }
-    getNormalGeoCoding(STATE.userInput, STATE.maxDistance);
+    getGeoCoding(STATE.userInput, STATE.maxDistance);
   });
 }
-/////Document Ready Function//////
+//================Document Ready================
 $(document).ready(handleUserInputs);

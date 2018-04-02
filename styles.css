@@ -20,6 +20,7 @@ body {
   margin: 5px;
   border: solid rgba(0, 0, 0, 0) 2px;
   border-radius: 10px;
+  display: none;
 }
 .titleText {
   margin: 5px;
