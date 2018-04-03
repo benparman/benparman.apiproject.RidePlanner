@@ -53,8 +53,8 @@ h1 {
 }
 .appText h4, h1, h3, h5 { 
   margin: 0;
-  background: #00000029;
   color: #ffffffd4;
+  text-shadow: 3px 3px #000000;
 }
 .js-text p {
   font-size: small;
