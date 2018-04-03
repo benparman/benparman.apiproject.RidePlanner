@@ -13,7 +13,7 @@ body {
   max-width: 1200px;
   border: 5px solid black;
   border-radius: 8px;
-  font-family: 'Shrikhand', cursive;
+  font-family: 'Ubuntu', sans-serif;
 }
 #js-google_map {
   height: 500px;
@@ -45,10 +45,16 @@ h1 {
   text-decoration: underline;
 }
 /* change this class name? */
-.js-text h4, h1, h3, h5 { 
+.js-text h4, h1, h3, h5, p { 
   margin: 0;
-  background: #ffffff21;
+  background: #0000008c;
+  color: #ffffffd4;
 }
+
+.js-text p {
+  font-size: small;
+}
+
 select {
   width: 150px;
   font: normal 11px verdana;
@@ -63,6 +69,13 @@ select {
   border: 1px solid #a6a6a6;
   border-radius: 5px
 }  
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px black inset;
+    -webkit-text-fill-color: white !important;
+}
+
+
 #js-location-submit-button {
   color: white;
   background: #000000c9;
