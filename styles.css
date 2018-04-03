@@ -2,7 +2,6 @@ html {
   height: 100%;
   width: 100%;
 }
-
 body {
   background-image: url('images/mtn.jpg');
   background-size: 100% 100%;
@@ -30,11 +29,9 @@ body {
   display: none;
   opacity: .75;
 }
-
 #js-google_map:hover{
   opacity: .95;
 }
-
 .titleText {
   margin: 5px;
   text-align: center;
@@ -54,24 +51,20 @@ body {
 h1 {
   text-decoration: underline;
 }
-/* change this class name? */
-.js-text h4, h1, h3, h5 { 
+.appText h4, h1, h3, h5 { 
   margin: 0;
   background: #00000029;
   color: #ffffffd4;
 }
-
 .js-text p {
   font-size: small;
 }
-
 select {
   width: 150px;
   font: normal 11px verdana;
   color: #ffffffe6;
   background: #2f2319;
 }
-
 .searchTerms {
   width: 115px;
   color: ffffffe6;
@@ -79,13 +72,10 @@ select {
   border: 1px solid #a6a6a6;
   border-radius: 5px
 }  
-
 input:-webkit-autofill {
     -webkit-box-shadow: 0 0 0px 1000px #2f2319 inset;
     -webkit-text-fill-color: white !important;
 }
-
-
 #js-location-submit-button {
   color: #ffffffe6;
   background: #2f2319;
