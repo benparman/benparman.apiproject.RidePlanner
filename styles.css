@@ -1,9 +1,14 @@
+html {
+  height: 100%;
+  width: 100%;
+}
+
 body {
-  background-image: url('images/tracksDark.jpg');
-  background-size: 100%;
+  background-image: url('images/mtn.jpg');
+  background-size: 100% 100%;
 }
 .main {
-  background-image: url(images/mtn.jpg);
+  background-image: url('images/tracksDark.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -14,9 +19,10 @@ body {
   border: 5px solid black;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
+  font-size: large;
 }
 #js-google_map {
-  height: 500px;
+  height: 600px;
   width: auto;
   margin: 5px;
   border: solid rgba(0, 0, 0, 0) 2px;
@@ -51,8 +57,8 @@ h1 {
 /* change this class name? */
 .js-text h4, h1, h3, h5 { 
   margin: 0;
-  background: #ffffff7d;
-  color: #000000d4;
+  background: #00000029;
+  color: #ffffffd4;
 }
 
 .js-text p {
@@ -62,27 +68,27 @@ h1 {
 select {
   width: 150px;
   font: normal 11px verdana;
-  color: rgb(255, 255, 255);
-  background: #000000c9;
+  color: #ffffffe6;
+  background: #2f2319;
 }
 
 .searchTerms {
   width: 115px;
-  color: white;
-  background: #000000c9;
+  color: ffffffe6;
+  background: #2f2319;
   border: 1px solid #a6a6a6;
   border-radius: 5px
 }  
 
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px black inset;
+    -webkit-box-shadow: 0 0 0px 1000px #2f2319 inset;
     -webkit-text-fill-color: white !important;
 }
 
 
 #js-location-submit-button {
-  color: white;
-  background: #000000c9;
+  color: #ffffffe6;
+  background: #2f2319;
   border: 1px solid #a6a6a6;
   border-radius: 5px
 }

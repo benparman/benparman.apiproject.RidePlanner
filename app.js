@@ -26,7 +26,8 @@ const STATE={
   zoomLevel: 5,
   JSONgeoCoding: {},
   JSONmtbProject: null,
-  jsonWeatherUnderground: {}
+  jsonWeatherUnderground: {},
+  viewPortWidth: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
 };
 //================GeoCoding API Call================
 function getGeoCoding(searchTerm) {
@@ -114,7 +115,7 @@ function addMarkers(location, map){
     });
     const infowindow=new google.maps.InfoWindow({
       content: location.infoWindowContent,
-      maxWidth: 250
+      maxWidth: STATE.viewPortWidth*.6
     });
     marker.addListener('click', function() { 
       if (STATE.currentInfoWindow) {
@@ -158,11 +159,9 @@ function generateGoogleMap() {
 function handleUserInputs(){
   $('.js-searchBox').submit(event => {
     event.preventDefault();
-    //update userAnswer in STORE to the user's answer choice
     STATE.userInput=$('input[type=text][name=searchTerms]').val();
     STATE.maxDistance=$('select#userSearchRadius').val();
     STATE.minTrailLength=$('select#userTrailLength').val();
-
     STATE.userRating=$('select#userRating').val();
 
     if ($('select#userSearchRadius').val() === '5') {
@@ -178,6 +177,10 @@ function handleUserInputs(){
       STATE.zoomLevel=8;
     }
     getGeoCoding(STATE.userInput, STATE.maxDistance);
+  });
+  $( window ).resize(function() {
+    event.preventDefault();
+    STATE.viewPortWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
   });
 }
 //================Document Ready================
