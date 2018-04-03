@@ -111,7 +111,10 @@ function addMarkers(location, map){
       map: map,
       title: location.title
     });
-    const infowindow=new google.maps.InfoWindow({ content: location.tooltip });
+    const infowindow=new google.maps.InfoWindow({
+      content: location.infoWindowContent,
+      maxWidth: 250
+    });
     marker.addListener('click', function() { 
       if (STATE.currentInfoWindow) {
         STATE.currentInfoWindow.close();
@@ -132,7 +135,7 @@ function generateGoogleMap() {
         lat: trail.latitude,
         lng: trail.longitude
       },
-      tooltip:
+      infoWindowContent:
         `<div class="windowWrapper">
           <h2 class="infoWindow"><a href="${trail.url}" target="_blank">${trail.name} - ${trail.location}</a></h2>
           <img class="icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
