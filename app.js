@@ -21,6 +21,7 @@ const STATE={
   userLatLng: 0,
   userLat: 0,
   userLon: 0,
+  userRating: 0,
   userSortMethod: null,
   zoomLevel: 5,
   JSONgeoCoding: {},
@@ -55,10 +56,10 @@ function getMTBproject() {
       lat: STATE.lat,
       lon: STATE.lon,
       maxDistance: STATE.maxDistance, 
-      maxResults: 25, //replace with user input?
-      sort: 'distance', //replace with user input?
+      maxResults: 100,
+      sort: 'distance',
       minLength: STATE.minTrailLength,
-      minStars: 4, //replace with user input?
+      minStars: STATE.userRating,
       key: mtbProjectApiKey
     },
     dataType: 'json',
@@ -161,6 +162,9 @@ function handleUserInputs(){
     STATE.userInput=$('input[type=text][name=searchTerms]').val();
     STATE.maxDistance=$('select#userSearchRadius').val();
     STATE.minTrailLength=$('select#userTrailLength').val();
+
+    STATE.userRating=$('select#userRating').val();
+
     if ($('select#userSearchRadius').val() === '5') {
       STATE.zoomLevel=10;
     }
