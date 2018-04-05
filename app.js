@@ -136,7 +136,7 @@ function generateGoogleMap() {
       infoWindowContent:
         `<div class="windowWrapper">
           <h2 class="infoWindow"><a href="${trail.url}" target="_blank">${trail.name} - ${trail.location}</a></h2>
-          <img class="icon" src="http://openweathermap.org/img/w/${weather.list[0].weather[0].icon}.png" alt="Weather Icon" height="50" width="50">
+          <img class="icon" src="https://openweathermap.org/img/w/${weather.list[0].weather[0].icon}.png" alt="Weather Icon" height="50" width="50">
           <h4 class="infoWindow">Description: ${trail.summary}</h4>
           <p class="infoWindow">Difficuly: ${trail.difficulty}</p>
           <p class="infoWindow">Length: ${trail.length}</p>
