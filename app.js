@@ -2,11 +2,11 @@
 //================Endpoints================
 const geoCodingEndpoint='https://maps.googleapis.com/maps/api/geocode/json';
 const mtbProjectEndpoint='https://www.mtbproject.com/data/get-trails';
-const wUndergroundEndpoint='http://api.wunderground.com/api';
+const openWeatherMapEndpoint='https://api.openweathermap.org/data/2.5/forecast?';
 //================API Keys================
 const geoCodingApiKey='AIzaSyB05Gh-VXpXhypmBg4R3hzZl8zFxJJYLGQ';
 const mtbProjectApiKey='7039473-9cbb333b7351c6704d04a854df751159';
-const wUndergroundApiKey='9f701de35b137c15';
+const openWeatherMapApiKey='a1681d336327b175de2ba24ee228b8c5';
 //================APP STATE================
 const STATE={
   address: null,
@@ -26,8 +26,8 @@ const STATE={
   zoomLevel: 5,
   JSONgeoCoding: {},
   JSONmtbProject: null,
-  jsonWeatherUnderground: {},
   viewPortWidth: Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
+  JSONopenWeatherMap: null
 };
 //================GeoCoding API Call================
 function getGeoCoding(searchTerm) {
@@ -66,33 +66,29 @@ function getMTBproject() {
     dataType: 'json',
     success: function(data) {
       STATE.JSONmtbProject=data;
-      getWeatherUnderground();
+      getOpenWeatherMap();
     }
   };
   $.ajax(settings);
 }
-//================Weather Underground API Call================
-function getWeatherUnderground() {
-  const searchTypes=['conditions','forecast'];
-  const promises=searchTypes.map(function(searchType) {
-    return $.ajax({
-      url : `${wUndergroundEndpoint}/${wUndergroundApiKey}/${searchType}/q/${STATE.latLng}.json`,
-    });
-  });
-  Promise.all(promises).then(function(results) {
-    STATE.jsonWeatherUnderground={
-      currentConditions: {
-        temperature: results[0].current_observation.temp_f,
-      },
-      forecast: {
-        tempHigh: results[1].forecast.simpleforecast.forecastday[0].high.fahrenheit,
-        tempLow: results[1].forecast.simpleforecast.forecastday[0].low.fahrenheit,
-        description: results[1].forecast.simpleforecast.forecastday[0].conditions,
-        image: results[1].forecast.simpleforecast.forecastday[0].icon_url
-      }
-    };
-    generateGoogleMap();
-  });
+//================Open Weather Map API Call================
+function getOpenWeatherMap() {
+  const settings={
+    url: openWeatherMapEndpoint,
+    data: {
+      lat: STATE.lat,
+      lon: STATE.lon,
+      APPID: openWeatherMapApiKey,
+      units: 'imperial'
+    },
+    dataType: 'json',
+    success: function(data) {
+      STATE.JSONopenWeatherMap=data;
+      generateGoogleMap();
+      //call other function here if necessary
+    }
+  };
+  $.ajax(settings);
 }
 //================Google Map Generator================
 function initMap(currentLocation, markerLocations) {
@@ -128,7 +124,7 @@ function addMarkers(location, map){
 }
 //================InfoWindow Generator================
 function generateGoogleMap() {
-  const weather=STATE.jsonWeatherUnderground;
+  const weather=STATE.JSONopenWeatherMap;
   const currentLocation={lat: STATE.lat, lng: STATE.lon};
   const markerLocations=STATE.JSONmtbProject.trails.map(function(trail){
     return {
@@ -140,16 +136,16 @@ function generateGoogleMap() {
       infoWindowContent:
         `<div class="windowWrapper">
           <h2 class="infoWindow"><a href="${trail.url}" target="_blank">${trail.name} - ${trail.location}</a></h2>
-          <img class="icon" src="${weather.forecast.image}" alt="Weather Icon" height="50" width="50">
+          <img class="icon" src="http://openweathermap.org/img/w/${weather.list[0].weather[0].icon}.png" alt="Weather Icon" height="50" width="50">
           <h4 class="infoWindow">Description: ${trail.summary}</h4>
           <p class="infoWindow">Difficuly: ${trail.difficulty}</p>
           <p class="infoWindow">Length: ${trail.length}</p>
           <p class="infoWindow">User Rating: ${trail.stars}</p>
           <img class="thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
-          <p class="infoWindow">Current Condition: ${weather.forecast.description}</p>
-          <p class="infoWindow">Current Temperature: ${weather.currentConditions.temperature}</p>
-          <p class="infoWindow">Daily High: ${weather.forecast.tempHigh}</p>
-          <p class="infoWindow">Daily Low: ${weather.forecast.tempLow}</p>
+          <p class="infoWindow">Current Condition: ${weather.list[0].weather[0].description}</p>
+          <p class="infoWindow">Current Temperature: ${weather.list[0].main.temp}</p>
+          <p class="infoWindow">Daily High: ${weather.list[0].main.temp_max}</p>
+          <p class="infoWindow">Daily Low: ${weather.list[0].main.temp_min}</p>
         </div>`
     };
   });
