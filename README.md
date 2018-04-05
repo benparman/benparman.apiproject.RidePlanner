@@ -5,11 +5,11 @@ This app is a ride planning utility for mountain bikers.  It uses location infor
 The API's currently used are:
 -Google Maps GeoCoding API - converts user input to Lat/Lng coordinates
 -MTB Project API - provides trail information based on GeoCoding data
--Weather Underground API - Provides weather information based on MTB Project Data
+-Open Weather Map API - Provides weather information based on MTB Project Data
 -Google Maps API - Provides graphical, geographic representation of all other data
 
 Considerations for future application features include:
 -Automatic GeoLocation based on user's browser GeoLocation data
 -Ability to search for locations using dropdown lists providing Country > State/Region > City
--Customizable search criteria provided to user for MTBProject and Weather Underground Data
+-Customizable search criteria provided to user for MTBProject and Open Weather Map Data
 -Heatmap overlay for Google Map
