@@ -4,9 +4,6 @@ body {
 
 .container {
   text-align: center;
-  margin: auto;
-  height: auto;
-  width: auto;
   border: 5px solid black;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
@@ -19,13 +16,16 @@ body {
 .fieldBox {
     background-color: blue;
     border: 1px solid orange;
-    width: 225px;
+    width: 24.7%;
+    min-width: 225px;
+    max-width: 325px;
+    margin: 5px 0 5px 0;
 }
 
 .stackable {
   background-color: red;
   float: none;
-  margin: auto;
+  margin: none;
   display: inline-block;
 }
 
