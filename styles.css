@@ -1,27 +1,23 @@
 body {
   background-color: #b4b4b4;
 }
-
 .container {
   text-align: center;
   border: 5px solid black;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
 }
-
 .static {
   background-color: blue;
+  margin: 2px 0 2px 0;
 }
-
 .fieldBox {
     background-color: blue;
     border: 1px solid orange;
-    width: 24.7%;
+/*     width: 24.7%; */
     min-width: 225px;
-    max-width: 325px;
-    margin: 5px 0 5px 0;
+    margin: 2px 0 2px 0;
 }
-
 .stackable {
   background-color: red;
   float: none;
@@ -29,13 +25,21 @@ body {
   display: inline-block;
 }
 
+@media screen and (max-width: 499px){
+  .fieldBox{
+    width: 99%;
+  }
+}
+
+@media screen and (max-width: 959px){
+  .fieldBox{
+    width: 34%;
+  }
+}
+
 .userInput h1, h2, h3, h4, h5, .container h1 {
   margin: 0px;
 }
-
-
-
-
 #js-google_map {
   height: 600px;
   width: auto;
