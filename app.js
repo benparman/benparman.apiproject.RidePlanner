@@ -45,6 +45,9 @@ function getGeoCoding(searchTerm) {
       STATE.latLng=(STATE.lat)+','+(STATE.lon);
       STATE.JSONgeoCoding=data;
       getMTBproject();
+    },
+    error: function() {
+      $('.errorMessage').text('Please try again later');
     }
   };
   $.ajax(settings);
@@ -67,6 +70,9 @@ function getMTBproject() {
     success: function(data) {
       STATE.JSONmtbProject=data;
       getOpenWeatherMap();
+    },
+    error: function() {
+      $('.errorMessage').text('Please try again later');
     }
   };
   $.ajax(settings);
@@ -85,7 +91,9 @@ function getOpenWeatherMap() {
     success: function(data) {
       STATE.JSONopenWeatherMap=data;
       generateGoogleMap();
-      //call other function here if necessary
+    },
+    error: function() {
+      $('.errorMessage').text('Please try again later');
     }
   };
   $.ajax(settings);

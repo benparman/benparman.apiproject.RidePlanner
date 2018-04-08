@@ -6,11 +6,12 @@ body {
   background-image: url('images/mtn.jpg');
   background-size: cover;
 }
-.main {
+.container {
   background-image: url('images/tracksDark.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
+  text-align: center;
   margin: auto;
   height: auto;
   width: 95%;
@@ -20,6 +21,32 @@ body {
   font-family: 'Ubuntu', sans-serif;
   font-size: large;
 }
+
+#appTitle {
+  background-color: red;
+  border: 1px solid yellow;
+  margin: 5px;
+}
+
+.userInput {
+    background-color: blue;
+    border: 1px solid orange;
+    margin: 5px;
+}
+
+#usageTip {
+  background-color: green;
+  border: 1px solid red;
+  margin: 5px;
+}
+
+.userInput h1, h2, h3, h4, h5, .container h1 {
+  margin: 0px;
+}
+
+
+
+
 #js-google_map {
   height: 600px;
   width: auto;
@@ -31,10 +58,6 @@ body {
 }
 #js-google_map:hover{
   opacity: .95;
-}
-.titleText {
-  margin: 5px;
-  text-align: center;
 }
 .js-searchBox {
   margin: 0 auto;
@@ -50,11 +73,6 @@ body {
 }
 h1 {
   text-decoration: underline;
-}
-.appText h4, h1, h3, h5 { 
-  margin: 0;
-  color: #ffffffd4;
-  text-shadow: 3px 3px #000000;
 }
 .js-text p {
   font-size: small;

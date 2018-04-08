@@ -11,53 +11,71 @@
   <title>Ride Forecaster</title>
 </head>
 <body>
-  <div class="main" role="main">
-    <div class=titleText></div>
-    <div class="js-searchBox">
-        <div class="appText">
-            <h1>Trail Finder</h1>
-            <h5>Use this tool to find the best mountain bike trails in your area</h5>
-            <h3>Show me trails within:</h3>
-            <form>
-              <select class="userDropDowns appText" id="userSearchRadius" name="searchRadius">
-                <option value="5">5 Miles</option> 
-                <option value="10">10 Miles</option>
-                <option value="25" selected>25 Miles</option>
-                <option value="50">50 Miles</option>
-              </select>
-            </form>
-            <h4>With a minimum length of:</h4>
-            <form>
-              <select class="userDropDowns appText" id="userTrailLength" name="trailLength">
-                <option value="5" selected>5+ Miles</option> 
-                <option value="10">10+ Miles</option>
-                <option value="25">25+ Miles</option>
-                <option value="50">50+ Miles</option>
-              </select>
-            </form>
-            <h4>With a rating of at least:</h4>
-            <form>
-              <select class="userDropDowns appText" id="userRating" name="userRating">
-                <option value="1">0 Stars</option>
-                <option value="2" selected>1 Star</option>
-                <option value="2">2 Stars</option>
-                <option value="3">3 Stars</option>
-                <option value="4">4 Stars</option>
-                <option value="5">5 Stars</option>
-              </select>
-            </form>
-            <h4>From:</h4>
-            <form>
-            <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Where are you riding?" required="">
-            <button aria-label="submit-button" id="js-location-submit-button" type="submit">
-              Go!
-            </button>
-            <h4>Tip: Increase search radius, and decrease length and rating to display more results!</h4>
-            </form>
-          </div>
-    </div>
-    <div id="js-google_map"></div>
+
+
+
+<div class="container" role="app-container">
+  <div id="appTitle">
+    <h1>Trail Finder</h1>
+    <h5>Use this tool to find the best mountain bike trails in your area</h5>
   </div>
+
+  <div class="userInput" id="searchRadius" name="searchRadius">
+    <h3>Show me trails within:</h3>
+    <form>
+      <select class="dropDown">
+        <option value="5">5 Miles</option> 
+        <option value="10">10 Miles</option>
+        <option value="25" selected>25 Miles</option>
+        <option value="50">50 Miles</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="userInput" id="trailLength">
+    <h4>With a minimum length of:</h4>
+    <form>
+      <select class="dropDown">
+        <option value="5" selected>5+ Miles</option> 
+        <option value="10">10+ Miles</option>
+        <option value="25">25+ Miles</option>
+        <option value="50">50+ Miles</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="userInput" id="trailRating">
+    <h4>With a rating of at least:</h4>
+    <form>
+      <select class="dropDown">
+        <option value="1">0 Stars</option>
+        <option value="2" selected>1 Star</option>
+        <option value="2">2 Stars</option>
+        <option value="3">3 Stars</option>
+        <option value="4">4 Stars</option>
+        <option value="5">5 Stars</option>
+      </select>
+    </form>
+  </div>
+
+  <div class="userInput" id="searchLocation">
+    <h4>From:</h4>
+    <form>
+      <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Where are you riding?" required="">
+      <button aria-label="submit-button" id="js-location-submit-button" type="submit">Go!</button>
+    </form>
+  </div>
+
+  <div id="usageTip">
+    <h4>Tip: Increase search radius, and decrease length and rating to display more results!</h4>
+  </div>
+  
+  <div class="errorMessage"></div>
+  <div id="js-google_map"></div>
+</div>
+
+
+
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="app.js"></script>
