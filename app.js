@@ -161,7 +161,7 @@ function generateGoogleMap() {
 }
 //================Event Handler================
 function handleUserInputs(){
-  $('.js-searchBox').submit(event => {
+  $('.container').submit(event => {
     event.preventDefault();
     STATE.userInput=$('input[type=text][name=searchTerms]').val();
     STATE.maxDistance=$('select#userSearchRadius').val();
