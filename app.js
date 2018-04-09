@@ -47,7 +47,7 @@ function getGeoCoding(searchTerm) {
       getMTBproject();
     },
     error: function() {
-      $('.errorMessage').text('Please try again later');
+      $('.errorMessage').text('Google GeoCoding Error. Please try again later');
     }
   };
   $.ajax(settings);
@@ -72,7 +72,7 @@ function getMTBproject() {
       getOpenWeatherMap();
     },
     error: function() {
-      $('.errorMessage').text('Please try again later');
+      $('.errorMessage').text('MTB Project API Timeout or Error.  Please try again later');
     }
   };
   $.ajax(settings);
@@ -93,7 +93,7 @@ function getOpenWeatherMap() {
       generateGoogleMap();
     },
     error: function() {
-      $('.errorMessage').text('Please try again later');
+      $('.errorMessage').text('Open Weather Map API Timeout or Error. Please try again later');
     }
   };
   $.ajax(settings);
@@ -142,19 +142,19 @@ function generateGoogleMap() {
         lng: trail.longitude
       },
       infoWindowContent:
-        `<div class="windowWrapper">
+        `<infoWindowContent class="windowWrapper">
           <h2 class="infoWindow"><a href="${trail.url}" target="_blank">${trail.name} - ${trail.location}</a></h2>
           <img class="icon" src="https://openweathermap.org/img/w/${weather.list[0].weather[0].icon}.png" alt="Weather Icon" height="50" width="50">
           <h4 class="infoWindow">Description: ${trail.summary}</h4>
+          <img class="thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
           <p class="infoWindow">Difficuly: ${trail.difficulty}</p>
           <p class="infoWindow">Length: ${trail.length}</p>
           <p class="infoWindow">User Rating: ${trail.stars}</p>
-          <img class="thumbnail" src="${trail.imgSmall}" alt="Trail Photo" height="150" width="150">
           <p class="infoWindow">Current Condition: ${weather.list[0].weather[0].description}</p>
           <p class="infoWindow">Current Temperature: ${weather.list[0].main.temp}</p>
           <p class="infoWindow">Daily High: ${weather.list[0].main.temp_max}</p>
           <p class="infoWindow">Daily Low: ${weather.list[0].main.temp_min}</p>
-        </div>`
+        </infoWindowContent>`
     };
   });
   initMap(currentLocation, markerLocations);

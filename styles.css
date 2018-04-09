@@ -1,42 +1,45 @@
 body {
-  background-color: #b4b4b4;
+  background-image: url('images/mtn.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  height: -webkit-fill-available;
+}
+.header {
+  margin-bottom: 15px;
 }
 .container {
   text-align: center;
   border: 5px solid black;
   border-radius: 8px;
   font-family: 'Ubuntu', sans-serif;
+  background-color: #ffffff30;
 }
 .static {
-  background-color: blue;
   margin: 2px 0 2px 0;
 }
+#usageTip {
+  margin-top: 5px;
+}
 .fieldBox {
-    background-color: blue;
-    border: 1px solid orange;
-/*     width: 24.7%; */
     min-width: 225px;
     margin: 2px 0 2px 0;
 }
 .stackable {
-  background-color: red;
   float: none;
   margin: none;
   display: inline-block;
 }
-
 @media screen and (max-width: 499px){
   .fieldBox{
     width: 99%;
   }
 }
-
 @media screen and (max-width: 959px){
   .fieldBox{
     width: 34%;
   }
 }
-
 .userInput h1, h2, h3, h4, h5, .container h1 {
   margin: 0px;
 }
@@ -47,18 +50,44 @@ body {
   border: solid rgba(0, 0, 0, 0) 2px;
   border-radius: 10px;
   display: none;
-  opacity: .75;
+  opacity: .8
 }
 #js-google_map:hover{
-  opacity: .95;
+  opacity: .9;
 }
 .infoWindow {
-  margin: 0;
+  margin: auto;
   max-width: 350px;
   max-height: 250px;
+  text-align: left;
 }
-.icon, .thumbnail {
+
+.gm-style-iw {
+  font-family: 'Ubuntu', sans-serif;
+}
+
+.windowWrapper p {
+  font-family: none;
+  margin: 1px 0 1px 0;
+  font-size: 110%;
+}
+.windowWrapper h4 {
+  margin: 10px 0 16px 0;
+  font-family: none;
+  font-size: 130%;
+}
+#js-google_map > div > div > div:nth-child(1) > div:nth-child(3) > div:nth-child(2) > div:nth-child(4) > div > div.gm-style-iw > div:nth-child(1) > div > infowindowcontent > h2 > a {
+  text-decoration: none;
+  color: #010020;
+}
+.icon {
   float: right;
+}
+.thumbnail {
+  border: 1px solid #ffffff00;
+  border-radius: 15px;
+  float: left;
+  margin-right: 10px;
 }
 h1 {
   text-decoration: underline;
@@ -70,24 +99,31 @@ select {
   width: 150px;
   font: normal 11px verdana;
   color: #ffffffe6;
-  background: #2f2319;
+  background: #00000080;
+  font-size: 14px;
 }
 .searchTerms {
   width: 115px;
   color: #ffffff;
-  background: #2f2319;
+  background: #00000080;
   border: 1px solid #a6a6a6;
-  border-radius: 5px
+  border-radius: 5px;
+  font-size: 14px;
+  width: 150px;
+  text-align: center;
 }  
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0px 1000px #2f2319 inset;
+    -webkit-box-shadow: 0 0 0px 1000px #3f5871 inset;
     -webkit-text-fill-color: white !important;
+    font-size: 15px;
 }
 #js-location-submit-button {
   color: #ffffffe6;
-  background: #2f2319;
+  background: #00000080;
   border: 1px solid #a6a6a6;
-  border-radius: 5px
+  border-radius: 5px;
+  margin-bottom: 5px;
+  font-size: 15px;
 }
 ::placeholder {
     color: white;
