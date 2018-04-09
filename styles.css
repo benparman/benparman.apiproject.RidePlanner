@@ -3,10 +3,13 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
-  height: -webkit-fill-available;
+  min-height: 100vh;
 }
 .header {
   margin-bottom: 15px;
+}
+.mobile {
+  display: none;
 }
 .container {
   text-align: center;
@@ -31,6 +34,12 @@ body {
   display: inline-block;
 }
 @media screen and (max-width: 499px){
+  body {
+    background-attachment: fixed;
+  }
+  .mobile {
+    display: block;
+  }
   .fieldBox{
     width: 99%;
   }
