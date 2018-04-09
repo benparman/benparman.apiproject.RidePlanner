@@ -11,6 +11,11 @@ body {
 .mobile {
   display: none;
 }
+fieldset {
+  outline: 0;
+  border: 0;
+  padding: 0;
+}
 .container {
   text-align: center;
   border: 5px solid black;
@@ -44,12 +49,18 @@ body {
     width: 99%;
   }
 }
-@media screen and (max-width: 959px){
+@media screen and (max-width: 1025px){
   .fieldBox{
     width: 34%;
   }
 }
-.userInput h1, h2, h3, h4, h5, .container h1 {
+
+label {
+  width: 100%;
+  display: inline-block;
+}
+
+.userInput h1, h2, label, h4, h5, .container h1 {
   margin: 0px;
 }
 #js-google_map {
