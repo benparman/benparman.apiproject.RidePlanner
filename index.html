@@ -9,15 +9,15 @@
   <title>Ride Forecaster</title>
 </head>
 <body>
-  <div class="container" aria-labelledby="Content container" name="container" role="content_container">
-    <div class="header" id="titleText" aria-labelledby="Application header" name="header" role="header">
+  <div class="main" aria-label="Content container" name="container" role="main">
+    <div class="header" id="titleText" aria-label="Application header" name="header" role="heading">
       <h1>Find trails and see real-time weather data!</h1>
-      <h4>Select your preferences below and hit go!</h4>
+      <h2>Select your preferences below and hit go!</h2>
     </div>
   <form>
     <fieldset class="fieldBox stackable" id="searchRadius" name="searchRadius">
       <label>Search Radius</label>
-        <select class="dropDown" id="userSearchRadius" aria-labelledby="Search radius" type="select" role="drop _down_menu">
+        <select class="dropDown" id="userSearchRadius" aria-label="Search radius" type="select" role="menu">
           <option value="5">5 Miles</option> 
           <option value="10">10 Miles</option>
           <option value="25" selected>25 Miles</option>
@@ -26,7 +26,7 @@
     </fieldset>
     <fieldset class="fieldBox stackable" id="trailLength">
       <label>Trail Length</label>
-        <select class="dropDown" id="userTrailLength" aria-labelledby="Trail length" type="select" role="drop _down_menu">
+        <select class="dropDown" id="userTrailLength" aria-label="Trail length" type="select" role="menu">
           <option value="5" selected>5+ Miles</option> 
           <option value="10">10+ Miles</option>
           <option value="25">25+ Miles</option>
@@ -35,7 +35,7 @@
     </fieldset>
     <fieldset class="fieldBox stackable" id="trailRating">
       <label>Trail Rating</label>
-        <select class="dropDown" id="userRating" aria-labelledby="Trail rating" type="select" role="drop _down_menu">
+        <select class="dropDown" id="userRating" aria-label="Trail rating" type="select" role="menu">
           <option value="1">0 Stars</option>
           <option value="2" selected>1 Star</option>
           <option value="2">2 Stars</option>
@@ -46,11 +46,11 @@
     </fieldset>
     <fieldset class="fieldBox stackable" id="searchLocation" role="Location_SearchBox">
       <label>Location</label>
-        <input name="searchTerms" aria-labelledby="search-here" type="text" class="searchTerms" placeholder="Search here" required=""><br class="mobile"/>
-        <button aria-labelledby="submit-button" id="js-location-submit-button" type="submit">Go!</button>
+        <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Search here" required=""><br class="mobile"/>
+        <button aria-label="submit-button" id="js-location-submit-button" type="submit">Go!</button>
     </fieldset>
   </form>
-    <div class="errorMessage" aria-labelledby="Error message" name="errorMessage"></div>
+    <div class="errorMessage" aria-label="Error message" name="errorMessage"></div>
     <div id="js-google_map" aria-labelledby="Google map display" name="googleMap"></div>
   </div>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrlS-LQnc7fbdIRMZD5ctvGlYzQo3GyQU"></script>

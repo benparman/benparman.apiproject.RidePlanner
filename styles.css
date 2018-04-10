@@ -16,7 +16,7 @@ fieldset {
   border: 0;
   padding: 0;
 }
-.container {
+.main {
   text-align: center;
   border: 5px solid black;
   border-radius: 8px;
@@ -54,15 +54,17 @@ fieldset {
     width: 34%;
   }
 }
-
 label {
   width: 100%;
   display: inline-block;
 }
-
-.userInput h1, h2, label, h4, h5, .container h1 {
+.userInput h1, h2, label, h4, h5, .main h1 {
   margin: 0px;
 }
+h2 {
+  font-size: 20px;
+}
+
 #js-google_map {
   height: 600px;
   width: auto;
