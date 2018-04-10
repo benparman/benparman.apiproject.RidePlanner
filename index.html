@@ -10,7 +10,7 @@
 </head>
 <body>
   <div class="main" aria-label="Content container" name="container" role="main">
-    <div class="header" id="titleText" aria-label="Application header" name="header" role="heading">
+    <div class="header" id="titleText" aria-label="Application header" aria-level="1" name="header" role="heading">
       <h1>Find trails and see real-time weather data!</h1>
       <h2>Select your preferences below and hit go!</h2>
     </div>
@@ -18,33 +18,33 @@
     <fieldset class="fieldBox stackable" id="searchRadius" name="searchRadius">
       <label>Search Radius</label>
         <select class="dropDown" id="userSearchRadius" aria-label="Search radius" type="select" role="menu">
-          <option value="5">5 Miles</option> 
-          <option value="10">10 Miles</option>
-          <option value="25" selected>25 Miles</option>
-          <option value="50">50 Miles</option>
+          <option value="5" role="menuitem">5 Miles</option> 
+          <option value="10" role="menuitem">10 Miles</option>
+          <option value="25" role="menuitem" selected>25 Miles</option>
+          <option value="50" role="menuitem">50 Miles</option>
         </select>
     </fieldset>
     <fieldset class="fieldBox stackable" id="trailLength">
       <label>Trail Length</label>
         <select class="dropDown" id="userTrailLength" aria-label="Trail length" type="select" role="menu">
-          <option value="5" selected>5+ Miles</option> 
-          <option value="10">10+ Miles</option>
-          <option value="25">25+ Miles</option>
-          <option value="50">50+ Miles</option>
+          <option value="5" role="menuitem" selected>5+ Miles</option> 
+          <option value="10" role="menuitem">10+ Miles</option>
+          <option value="25" role="menuitem">25+ Miles</option>
+          <option value="50" role="menuitem">50+ Miles</option>
         </select>
     </fieldset>
     <fieldset class="fieldBox stackable" id="trailRating">
       <label>Trail Rating</label>
         <select class="dropDown" id="userRating" aria-label="Trail rating" type="select" role="menu">
-          <option value="1">0 Stars</option>
-          <option value="2" selected>1 Star</option>
-          <option value="2">2 Stars</option>
-          <option value="3">3 Stars</option>
-          <option value="4">4 Stars</option>
-          <option value="5">5 Stars</option>
+          <option value="1" role="menuitem">0 Stars</option>
+          <option value="2" role="menuitem" selected>1 Star</option>
+          <option value="2" role="menuitem">2 Stars</option>
+          <option value="3" role="menuitem">3 Stars</option>
+          <option value="4" role="menuitem">4 Stars</option>
+          <option value="5" role="menuitem">5 Stars</option>
         </select>
     </fieldset>
-    <fieldset class="fieldBox stackable" id="searchLocation" role="Location_SearchBox">
+    <fieldset class="fieldBox stackable" id="searchLocation" role="textbox">
       <label>Location</label>
         <input name="searchTerms" aria-label="search-here" type="text" class="searchTerms" placeholder="Search here" required=""><br class="mobile"/>
         <button aria-label="submit-button" id="js-location-submit-button" type="submit">Go!</button>
